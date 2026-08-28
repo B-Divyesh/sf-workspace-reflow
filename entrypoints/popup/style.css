@@ -28,5 +28,5 @@ label { display:block; font-weight:700; margin-bottom:6px; }
 input { width:100%; min-height:44px; border:2px solid #151713; background:#fff; color:#151713; padding:8px; font:14px monospace; }
 .license-row button { flex:0 0 auto; }
 .privacy { margin:14px 0 0; font-size:12px; color:#4f534b; }
-.privacy a { color:#123fc1; }
+.privacy a { display:inline-flex; align-items:center; justify-content:center; min-width:44px; min-height:44px; color:#123fc1; }
 @media (prefers-color-scheme:dark) { :root,body { background:#171914; color:#fffbed; } .brand,details { border-color:#fffbed; } .brand img,button,.button-link,input { border-color:#fffbed; } .brand img,.primary { box-shadow-color:#fffbed; } button,input { background:#242820; color:#fffbed; } .eyebrow,.hint,.privacy { color:#c9ccbe; } .privacy a { color:#9cb3ff; } kbd { background:#242820; } }

@@ -24,4 +24,16 @@ describe('static deployment policy', () => {
     expect(config.globalHeaders['Content-Security-Policy']).toContain("default-src 'self'");
     expect(config.globalHeaders['Permissions-Policy']).toContain('payment=()');
   });
+
+  it('serves every generated AVIF with the interoperable image MIME type', async () => {
+    const config = JSON.parse(await readFile('site/public/staticwebapp.config.json', 'utf8')) as {
+      routes: Array<{ route: string; headers?: Record<string, string> }>;
+    };
+    const generatedAvifs = ['reflow-workbench-768.avif', 'reflow-workbench-1280.avif'];
+
+    for (const asset of generatedAvifs) {
+      const route = config.routes.find((candidate) => candidate.route === `/assets/${asset}`);
+      expect(route?.headers?.['Content-Type'], asset).toBe('image/avif');
+    }
+  });
 });

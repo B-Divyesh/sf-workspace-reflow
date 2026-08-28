@@ -14,6 +14,8 @@ const licenseStatus = mustElement<HTMLElement>('license-status');
 
 let activeTabId: number | undefined;
 
+licenseInput.addEventListener('input', () => licenseInput.removeAttribute('aria-invalid'));
+
 async function send(type: string) {
   if (!activeTabId) throw new Error('No active tab');
   return browser.tabs.sendMessage(activeTabId, { type }) as Promise<{ ok?: boolean; rule?: { label: string } | null; open?: boolean }>;
@@ -93,8 +95,11 @@ licenseForm.addEventListener('submit', async (event) => {
   const token = licenseInput.value.trim();
   if (!token) {
     licenseStatus.textContent = 'Paste the license token from your receipt.';
+    licenseInput.setAttribute('aria-invalid', 'true');
+    licenseInput.focus();
     return;
   }
+  licenseInput.removeAttribute('aria-invalid');
   await browser.storage.local.set({ [EXTENSION_LICENSE_KEY]: token });
   licenseStatus.textContent = 'Checking license…';
   await updateLicenseStatus(true);

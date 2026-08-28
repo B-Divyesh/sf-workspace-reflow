@@ -168,6 +168,7 @@ export default defineContentScript({
         state.preferences = { ...DEFAULT_PREFERENCES, ...(stored[PREFERENCES_KEY] as Partial<ReflowPreferences> | undefined) };
       }
       applyPreferences();
+      await reconcileSaveButton(selector);
       renderSource();
       pane.setAttribute('aria-hidden', 'false');
       host.dataset.open = 'true';
@@ -271,10 +272,7 @@ export default defineContentScript({
         announce('Selection cancelled.');
         return;
       }
-      if (host.dataset.open) {
-        closePane();
-        return;
-      }
+      if (host.dataset.open) closePane();
       selectionActive = true;
       previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       keyboardCandidates = findKeyboardCandidates();
@@ -312,9 +310,19 @@ export default defineContentScript({
         updatedAt: new Date().toISOString()
       });
       await browser.storage.local.set({ [RULES_KEY]: rules });
-      const button = mustQuery<HTMLButtonElement>(shadow, '.wr-save');
-      button.textContent = '✓ Saved for this site';
+      updateSaveButton(true);
       announce(`Saved ${state.label} for this site.`);
+    }
+
+    function updateSaveButton(saved: boolean) {
+      const button = mustQuery<HTMLButtonElement>(shadow, '.wr-save');
+      button.textContent = saved ? '✓ Saved for this site' : 'Save for this site';
+      button.dataset.saved = String(saved);
+    }
+
+    async function reconcileSaveButton(selector: string) {
+      const rule = await findRule();
+      if (state.selector === selector) updateSaveButton(rule?.selector === selector);
     }
 
     async function removeRule() {
