@@ -36,6 +36,34 @@
       "tests_unit_license_test"
     ],
     "1": [
+      "entrypoints_content_main",
+      "entrypoints_content_main_announce",
+      "entrypoints_content_main_applypreferences",
+      "entrypoints_content_main_beginselection",
+      "entrypoints_content_main_cancelselection",
+      "entrypoints_content_main_chooseregion",
+      "entrypoints_content_main_closepane",
+      "entrypoints_content_main_describekeyboardcandidate",
+      "entrypoints_content_main_findkeyboardcandidates",
+      "entrypoints_content_main_findrule",
+      "entrypoints_content_main_movekeyboardcandidate",
+      "entrypoints_content_main_navigate",
+      "entrypoints_content_main_onpointermove",
+      "entrypoints_content_main_onselect",
+      "entrypoints_content_main_openpane",
+      "entrypoints_content_main_opensavedrule",
+      "entrypoints_content_main_persistpreferences",
+      "entrypoints_content_main_previewtarget",
+      "entrypoints_content_main_removerule",
+      "entrypoints_content_main_rendersource",
+      "entrypoints_content_main_sanitizeclone",
+      "entrypoints_content_main_saverule",
+      "entrypoints_content_main_selectregion",
+      "entrypoints_content_main_updatesentence",
+      "entrypoints_content_mustquery",
+      "entrypoints_content_preferredscrollbehavior"
+    ],
+    "2": [
       "axe_core_playwright",
       "jsdom",
       "package_devdependencies",
@@ -57,29 +85,6 @@
       "vite",
       "vitest",
       "wxt"
-    ],
-    "2": [
-      "entrypoints_content_main",
-      "entrypoints_content_main_announce",
-      "entrypoints_content_main_applypreferences",
-      "entrypoints_content_main_beginselection",
-      "entrypoints_content_main_cancelselection",
-      "entrypoints_content_main_chooseregion",
-      "entrypoints_content_main_closepane",
-      "entrypoints_content_main_findrule",
-      "entrypoints_content_main_navigate",
-      "entrypoints_content_main_onpointermove",
-      "entrypoints_content_main_onselect",
-      "entrypoints_content_main_openpane",
-      "entrypoints_content_main_opensavedrule",
-      "entrypoints_content_main_persistpreferences",
-      "entrypoints_content_main_previewtarget",
-      "entrypoints_content_main_removerule",
-      "entrypoints_content_main_rendersource",
-      "entrypoints_content_main_sanitizeclone",
-      "entrypoints_content_main_saverule",
-      "entrypoints_content_main_updatesentence",
-      "entrypoints_content_mustquery"
     ],
     "3": [
       "entrypoints_content",
@@ -212,8 +217,8 @@
   },
   "cohesion": {
     "0": 0.08901515151515152,
-    "1": 0.09523809523809523,
-    "2": 0.23809523809523808,
+    "1": 0.18769230769230769,
+    "2": 0.09523809523809523,
     "3": 0.1736842105263158,
     "4": 0.11764705882352941,
     "5": 0.125,
@@ -237,7 +242,7 @@
     {
       "id": "entrypoints_content_main",
       "label": "main()",
-      "degree": 22
+      "degree": 26
     },
     {
       "id": "package_scripts",
@@ -250,11 +255,6 @@
       "degree": 10
     },
     {
-      "id": "entrypoints_content_main_openpane",
-      "label": "openPane()",
-      "degree": 9
-    },
-    {
       "id": "tsconfig_include",
       "label": "include",
       "degree": 9
@@ -262,11 +262,21 @@
     {
       "id": "entrypoints_content_main_announce",
       "label": "announce()",
-      "degree": 8
+      "degree": 9
+    },
+    {
+      "id": "entrypoints_content_main_openpane",
+      "label": "openPane()",
+      "degree": 9
     },
     {
       "id": "entrypoints_content_main_beginselection",
       "label": "beginSelection()",
+      "degree": 7
+    },
+    {
+      "id": "entrypoints_content_main_rendersource",
+      "label": "renderSource()",
       "degree": 6
     },
     {
@@ -275,14 +285,9 @@
       "degree": 6
     },
     {
-      "id": "entrypoints_content_main_onselect",
-      "label": "onSelect()",
-      "degree": 6
-    },
-    {
-      "id": "entrypoints_content_main_rendersource",
-      "label": "renderSource()",
-      "degree": 6
+      "id": "lib_license_requestlicenseverdict",
+      "label": "requestLicenseVerdict()",
+      "degree": 5
     }
   ],
   "surprises": [
@@ -298,8 +303,19 @@
       "why": "connects across different repos/directories; peripheral node `updateLicenseStatus()` unexpectedly reaches hub `requestLicenseVerdict()`"
     },
     {
-      "source": "onSelect()",
+      "source": "selectRegion()",
       "target": "createStableSelector()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/selector.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "describeKeyboardCandidate()",
+      "target": "describeElement()",
       "source_files": [
         "entrypoints/content.ts",
         "lib/selector.ts"
@@ -329,17 +345,6 @@
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "connects across different repos/directories; bridges separate communities"
-    },
-    {
-      "source": "verifyLicense()",
-      "target": "cachedVerdictIsFresh()",
-      "source_files": [
-        "site/src/main.ts",
-        "lib/license.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "connects across different repos/directories"
     }
   ],
   "tokens": {
