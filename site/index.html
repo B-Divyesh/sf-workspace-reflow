@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Workspace Reflow pins one selected web-app region into a large, keyboard-first reading pane while the rest of your workspace stays visible." />
+    <meta name="theme-color" content="#fff8e8" />
+    <title>Workspace Reflow — Read one pane without losing the page</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Workspace Reflow home">
+        <img src="/mark.svg" width="40" height="40" alt="" />
+        <span>Workspace<br />Reflow</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#how">How it works</a>
+        <a href="#support">Supporter</a>
+        <button class="theme-toggle" type="button" aria-pressed="false">Dark</button>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span aria-hidden="true">01 /</span> Contextual reading tool</p>
+          <h1 id="hero-title">Make one pane readable. Keep the rest in sight.</h1>
+          <p class="lede">Select a dense list, thread, or document. Workspace Reflow pins it into a large, high-contrast reading pane without flattening the rest of your workspace.</p>
+          <div class="hero-actions">
+            <a class="button primary" href="/downloads/workspace-reflow-chrome.zip" download>Download for Chrome</a>
+            <a class="text-link" href="#install">Installation steps <span aria-hidden="true">↓</span></a>
+          </div>
+          <p class="microcopy">Free core tool · On-device processing · No account</p>
+        </div>
+        <figure class="hero-art">
+          <picture>
+            <source type="image/webp" media="(max-width: 760px)" srcset="/assets/reflow-workbench-768.webp" />
+            <source type="image/webp" srcset="/assets/reflow-workbench-1280.webp" />
+            <img src="/assets/reflow-workbench-1280.jpg" width="1536" height="1024" fetchpriority="high" decoding="async" alt="Abstract workspace panels with a small selected list unfolding into a broad, readable page while neighboring panels remain visible." />
+          </picture>
+          <figcaption><span>Selected context</span><span>Reflowed locally</span></figcaption>
+        </figure>
+      </section>
+
+      <section class="proof-strip" aria-label="Product principles">
+        <p><strong>Local only</strong><span>No page text is sent away</span></p>
+        <p><strong>One-key exit</strong><span>Escape always closes the pane</span></p>
+        <p><strong>Built for reading</strong><span>20–28 px type, 42–70 character lines</span></p>
+      </section>
+
+      <section class="how section" id="how" aria-labelledby="how-title">
+        <div class="section-heading">
+          <p class="eyebrow">The three-move workflow</p>
+          <h2 id="how-title">Zoom the task, not the whole browser.</h2>
+        </div>
+        <ol class="steps">
+          <li><span class="step-number">01</span><h3>Select</h3><p>Press <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>, move over the live region you need, and click.</p></li>
+          <li><span class="step-number">02</span><h3>Read</h3><p>Choose type size, line width, and light or dark contrast. Use <kbd>J</kbd>/<kbd>K</kbd> or arrow keys sentence by sentence.</p></li>
+          <li><span class="step-number">03</span><h3>Return</h3><p>Save one rule for the site. The pane reopens on your next visit, while Escape returns focus to the page.</p></li>
+        </ol>
+      </section>
+
+      <section class="context-section section" aria-labelledby="context-title">
+        <div class="context-visual" aria-hidden="true">
+          <div class="fake-app">
+            <div class="fake-nav"><i></i><i></i><i></i></div>
+            <div class="fake-list"><i></i><i></i><i></i><i></i></div>
+            <div class="fake-selected"><i></i><i></i><i></i></div>
+          </div>
+          <div class="fake-reflow"><b></b><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+        <div class="context-copy">
+          <p class="eyebrow">Not another reader mode</p>
+          <h2 id="context-title">Your workspace stays a workspace.</h2>
+          <p>Whole-page zoom makes every toolbar larger. Reader modes discard the app around your content. Reflow isolates only the region you choose, so navigation, status, and nearby task context remain where you left them.</p>
+          <ul class="check-list">
+            <li>Live region updates flow into the pane</li>
+            <li>Headings, lists, links, labels, and image text alternatives remain semantic</li>
+            <li>No OCR, paywall bypass, remote processing, or tracking</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="install section" id="install" aria-labelledby="install-title">
+        <div class="section-heading">
+          <p class="eyebrow">Install the v1 package</p>
+          <h2 id="install-title">Up and reading in two minutes.</h2>
+        </div>
+        <ol class="install-list">
+          <li><strong>Download and unzip</strong><span>Save the Chrome package, then unzip it into a folder you will keep.</span></li>
+          <li><strong>Open extensions</strong><span>Visit <code>chrome://extensions</code> and switch on Developer mode.</span></li>
+          <li><strong>Load the folder</strong><span>Choose “Load unpacked,” select the unzipped folder, then pin Workspace Reflow.</span></li>
+        </ol>
+        <a class="button secondary" href="/downloads/workspace-reflow-chrome.zip" download>Download the extension</a>
+        <p class="install-note">Chrome Web Store distribution is planned. This signed-source package is the pilot release.</p>
+      </section>
+
+      <section class="support section" id="support" aria-labelledby="support-title">
+        <div>
+          <p class="eyebrow">Optional supporter edition</p>
+          <h2 id="support-title">Accessibility stays free. Maintenance gets a backer.</h2>
+          <p>Every reflow, preference, saved rule, and keyboard feature is free. A one-time $19 purchase adds a supporter mark and helps fund compatibility work—nothing essential is withheld.</p>
+          <p class="merchant">Sociobot/Dodo is the merchant of record. Refunds are handled there and revoke the license automatically.</p>
+        </div>
+        <div class="price-block">
+          <p class="price"><span>$</span>19</p>
+          <p>One time · no subscription</p>
+          <a class="button primary" href="https://api.sociobot.in/api/v1/products/workspace-reflow/checkout">Become a supporter</a>
+          <details class="restore">
+            <summary>Already bought it?</summary>
+            <form id="license-form">
+              <label for="license">Paste your license</label>
+              <div><input id="license" name="license" autocomplete="off" spellcheck="false" /><button type="submit">Verify license</button></div>
+              <p id="license-status" role="status" aria-live="polite">The token is stored only in this browser.</p>
+            </form>
+          </details>
+        </div>
+      </section>
+
+      <section class="faq section" aria-labelledby="faq-title">
+        <div class="section-heading"><p class="eyebrow">Straight answers</p><h2 id="faq-title">Before you install</h2></div>
+        <details><summary>Is this a screen-reader replacement?</summary><p>No. It is an intermediate visual reading tool for people who need stronger reflow than browser zoom provides. It preserves useful semantics, but it does not replace assistive technology.</p></details>
+        <details><summary>What leaves my device?</summary><p>No page content, selected text, rule, or preference. Only an optional supporter license token is sent to Sociobot when you ask to verify it.</p></details>
+        <details><summary>Will it work on every page?</summary><p>It works on normal HTTP and HTTPS pages. Browsers block extensions on internal pages and web stores. Sites that rebuild their markup may require you to select and save the region again.</p></details>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="brand"><img src="/mark.svg" width="40" height="40" alt="" /><span>Workspace<br />Reflow</span></div>
+      <p>Contextual reading for dense workspaces.<br />Built by the Param Factory.</p>
+      <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-workspace-reflow">Source</a></nav>
+      <p class="generated-note">Hero artwork was generated for this product with the factory image model.</p>
+    </footer>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
