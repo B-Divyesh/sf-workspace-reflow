@@ -81,11 +81,12 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
 });
 
 test('keyboard-only users can preview and choose a static reading region', async ({}, testInfo) => {
-  test.skip(testInfo.project.name !== 'desktop-chromium', 'Extension keyboard test runs once in Chromium.');
+  const mobile = testInfo.project.name === 'mobile-chromium';
   const extensionPath = resolve('.output/chrome-mv3');
   const context = await chromium.launchPersistentContext(testInfo.outputPath('keyboard-profile'), {
     channel: 'chromium',
     headless: true,
+    viewport: mobile ? { width: 390, height: 844 } : { width: 1280, height: 720 },
     args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`]
   });
 
@@ -115,6 +116,8 @@ test('keyboard-only users can preview and choose a static reading region', async
     await expect(pane).toHaveAttribute('aria-hidden', 'false');
     await expect(page.locator('#workspace-reflow-root .wr-close')).toBeFocused();
     await expect(page.locator('#workspace-reflow-root .wr-reading')).not.toBeEmpty();
+    const paneBox = await pane.boundingBox();
+    expect(paneBox?.width).toBeLessThanOrEqual(mobile ? 390 : 860);
 
     const toolbarSizes = await page.locator('#workspace-reflow-root .wr-tools button').evaluateAll((buttons) => buttons.map((button) => {
       const bounds = button.getBoundingClientRect();
