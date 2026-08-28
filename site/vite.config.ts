@@ -19,9 +19,9 @@ export default defineConfig({
         terms: resolve(siteRoot, 'terms/index.html')
       },
       output: {
-        entryFileNames: 'assets/[name].js',
-        chunkFileNames: 'assets/[name].js',
-        assetFileNames: 'assets/[name][extname]'
+        entryFileNames: 'build/[name]-[hash].js',
+        chunkFileNames: 'build/[name]-[hash].js',
+        assetFileNames: 'build/[name]-[hash][extname]'
       }
     }
   }

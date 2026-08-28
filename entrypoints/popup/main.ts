@@ -20,10 +20,10 @@ async function send(type: string) {
 }
 
 async function loadStatus() {
-  const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
-  activeTabId = tab.id;
+  const tab = (await browser.tabs.query({ active: true, currentWindow: true }))[0];
+  activeTabId = tab?.id;
   try {
-    site.textContent = tab.url ? new URL(tab.url).hostname : 'Current page';
+    site.textContent = tab?.url ? new URL(tab.url).hostname : 'Current page';
   } catch {
     site.textContent = 'Current page';
   }

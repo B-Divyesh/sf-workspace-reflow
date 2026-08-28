@@ -17,8 +17,10 @@
     "prepare:assets": "node scripts/prepare-assets.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "test": "npm run test:unit && npm run build && npm run test:e2e",
-    "typecheck": "tsc --noEmit"
+    "test:package": "node scripts/verify-package.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "npm run typecheck",
+    "test": "npm run lint && npm run test:unit && npm run build && npm run test:package && npm run test:e2e"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

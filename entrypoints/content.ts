@@ -143,7 +143,7 @@ export default defineContentScript({
       }
       const count = state.sentences.length;
       position.textContent = `Sentence ${state.sentenceIndex + 1} of ${count}`;
-      if (scroll) state.sentences[state.sentenceIndex].scrollIntoView({ block: 'center', behavior: 'smooth' });
+      if (scroll) state.sentences[state.sentenceIndex]?.scrollIntoView({ block: 'center', behavior: 'smooth' });
       announce(position.textContent);
     }
 
@@ -332,8 +332,7 @@ export default defineContentScript({
         return;
       }
       if (!host.dataset.open || event.altKey || event.ctrlKey || event.metaKey) return;
-      const target = event.composedPath()[0];
-      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement) return;
+      if (isEditableControl(event.composedPath()[0])) return;
       if (event.key === 'j' || event.key === 'J' || event.key === 'ArrowDown') {
         event.preventDefault();
         navigate(1);
@@ -374,6 +373,20 @@ function mustQuery<T extends Element>(root: ParentNode, selector: string): T {
   const element = root.querySelector<T>(selector);
   if (!element) throw new Error(`Missing Workspace Reflow element: ${selector}`);
   return element;
+}
+
+/**
+ * Sentence shortcuts belong to the pane, never to an editor in the underlying
+ * workspace. Rich editors often use a contenteditable descendant or an ARIA
+ * textbox instead of a native input.
+ */
+function isEditableControl(target: EventTarget | null | undefined): boolean {
+  if (!(target instanceof Element)) return false;
+  const control = target.closest('input, textarea, select, [contenteditable], [role="textbox"], [role="searchbox"]');
+  return control instanceof HTMLInputElement
+    || control instanceof HTMLTextAreaElement
+    || control instanceof HTMLSelectElement
+    || (control instanceof HTMLElement && (control.isContentEditable || control.getAttribute('role') === 'textbox' || control.getAttribute('role') === 'searchbox'));
 }
 
 const PANE_CSS = `

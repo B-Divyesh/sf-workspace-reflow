@@ -34,8 +34,32 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
     const paneAccessibility = await new AxeBuilder({ page }).analyze();
     expect(paneAccessibility.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
 
+    await page.evaluate(() => {
+      const richEditor = document.createElement('div');
+      richEditor.id = 'rich-editor';
+      richEditor.contentEditable = 'true';
+      richEditor.textContent = 'Draft';
+      const ariaTextbox = document.createElement('div');
+      ariaTextbox.id = 'aria-textbox';
+      ariaTextbox.tabIndex = 0;
+      ariaTextbox.setAttribute('role', 'textbox');
+      document.body.append(richEditor, ariaTextbox);
+      const defaultPrevented: boolean[] = [];
+      for (const editor of [richEditor, ariaTextbox]) {
+        editor.addEventListener('keydown', (event) => defaultPrevented.push(event.defaultPrevented));
+      }
+      Object.assign(window, { workspaceReflowEditorDefaults: defaultPrevented });
+      richEditor.focus();
+    });
+    await page.keyboard.press('j');
+    await expect(page.locator('#rich-editor')).toContainText('j');
+    await page.locator('#aria-textbox').focus();
+    await page.keyboard.press('ArrowDown');
+    await expect.poll(() => page.evaluate(() => (window as typeof window & { workspaceReflowEditorDefaults: boolean[] }).workspaceReflowEditorDefaults)).toEqual([false, false]);
+
     await page.locator('#workspace-reflow-root .wr-save').click();
     await expect(page.locator('#workspace-reflow-root .wr-save')).toContainText('Saved');
+    await page.locator('#workspace-reflow-root .wr-reading').focus();
     await page.keyboard.press('j');
     await expect(page.locator('#workspace-reflow-root .wr-position')).toContainText('Sentence 1 of');
     await page.keyboard.press('Escape');

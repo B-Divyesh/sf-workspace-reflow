@@ -18,8 +18,9 @@ Live product page: <https://workspace-reflow.sociobot.in>
 - One local rule per site, automatic reopening, and live-region refreshes
 - Focus return on close, a full-screen mobile pane, and clear restricted-page,
   empty, stale-rule, and offline-license states
-- An optional $19 Supporter edition through the Sociobot billing API. All
-  accessibility features remain free.
+- All accessibility features remain free. Supporter checkout is intentionally
+  hidden until the Sociobot product is enabled; previously issued licenses can
+  still be restored and verified locally.
 
 ## Local development
 
@@ -60,7 +61,8 @@ The prompt, source image, and model provenance are in `assets/src/` and
 
 ## Testing
 
-`npm test` runs unit tests, a clean production build, axe-assisted desktop and
+`npm test` runs TypeScript/lint checks, unit tests, a clean production build,
+package-consumer archive validation, axe-assisted desktop and
 390 px site checks, and an actual Chromium extension workflow covering select,
 reflow, sentence navigation, save, automatic reopen, Escape, and focus return.
 
