@@ -250,29 +250,19 @@
       "degree": 10
     },
     {
-      "id": "tsconfig_include",
-      "label": "include",
+      "id": "entrypoints_content_main_openpane",
+      "label": "openPane()",
       "degree": 9
     },
     {
-      "id": "entrypoints_content_main_openpane",
-      "label": "openPane()",
+      "id": "tsconfig_include",
+      "label": "include",
       "degree": 9
     },
     {
       "id": "entrypoints_content_main_announce",
       "label": "announce()",
       "degree": 8
-    },
-    {
-      "id": "entrypoints_content_main_rendersource",
-      "label": "renderSource()",
-      "degree": 6
-    },
-    {
-      "id": "entrypoints_content_main_onselect",
-      "label": "onSelect()",
-      "degree": 6
     },
     {
       "id": "entrypoints_content_main_beginselection",
@@ -282,6 +272,16 @@
     {
       "id": "entrypoints_content_main_cancelselection",
       "label": "cancelSelection()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_onselect",
+      "label": "onSelect()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_rendersource",
+      "label": "renderSource()",
       "degree": 6
     }
   ],
