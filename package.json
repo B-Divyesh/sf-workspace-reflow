@@ -1,0 +1,36 @@
+{
+  "name": "workspace-reflow",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first contextual reflow browser extension for low-vision knowledge workers.",
+  "scripts": {
+    "postinstall": "wxt prepare",
+    "dev": "wxt",
+    "dev:site": "vite --config site/vite.config.ts",
+    "clean": "node scripts/clean.mjs",
+    "build:extension": "wxt build",
+    "build:site": "vite build --config site/vite.config.ts",
+    "package:extension": "wxt zip && node scripts/copy-package.mjs",
+    "build": "npm run clean && npm run build:extension && npm run build:site && npm run package:extension",
+    "preview:site": "vite preview --config site/vite.config.ts",
+    "test:unit": "vitest run",
+    "test:e2e": "playwright test",
+    "test": "npm run test:unit && npm run build && npm run test:e2e",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.58.2",
+    "@types/chrome": "0.0.287",
+    "jsdom": "25.0.1",
+    "playwright-core": "1.58.2",
+    "typescript": "5.7.3",
+    "vite": "6.0.11",
+    "vitest": "2.1.9",
+    "wxt": "0.20.6"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
