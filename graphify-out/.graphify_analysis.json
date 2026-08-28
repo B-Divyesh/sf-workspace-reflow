@@ -36,31 +36,6 @@
       "tests_unit_license_test"
     ],
     "1": [
-      "package",
-      "package_description",
-      "package_engines",
-      "package_engines_node",
-      "package_name",
-      "package_private",
-      "package_scripts",
-      "package_scripts_build",
-      "package_scripts_build_extension",
-      "package_scripts_build_site",
-      "package_scripts_clean",
-      "package_scripts_dev",
-      "package_scripts_dev_site",
-      "package_scripts_package_extension",
-      "package_scripts_postinstall",
-      "package_scripts_prepare_assets",
-      "package_scripts_preview_site",
-      "package_scripts_test",
-      "package_scripts_test_e2e",
-      "package_scripts_test_unit",
-      "package_scripts_typecheck",
-      "package_type",
-      "package_version"
-    ],
-    "2": [
       "axe_core_playwright",
       "jsdom",
       "package_devdependencies",
@@ -83,7 +58,7 @@
       "vitest",
       "wxt"
     ],
-    "3": [
+    "2": [
       "entrypoints_content_main",
       "entrypoints_content_main_announce",
       "entrypoints_content_main_applypreferences",
@@ -106,8 +81,9 @@
       "entrypoints_content_main_updatesentence",
       "entrypoints_content_mustquery"
     ],
-    "4": [
+    "3": [
       "entrypoints_content",
+      "entrypoints_content_iseditablecontrol",
       "entrypoints_content_reflowstate",
       "lib_selector",
       "lib_selector_createstableselector",
@@ -126,6 +102,25 @@
       "lib_types_theme",
       "tests_unit_selector_test",
       "tests_unit_sentences_test"
+    ],
+    "4": [
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_build_extension",
+      "package_scripts_build_site",
+      "package_scripts_clean",
+      "package_scripts_dev",
+      "package_scripts_dev_site",
+      "package_scripts_lint",
+      "package_scripts_package_extension",
+      "package_scripts_postinstall",
+      "package_scripts_prepare_assets",
+      "package_scripts_preview_site",
+      "package_scripts_test",
+      "package_scripts_test_e2e",
+      "package_scripts_test_package",
+      "package_scripts_test_unit",
+      "package_scripts_typecheck"
     ],
     "5": [
       "ref_chrome",
@@ -160,54 +155,71 @@
       "tsconfig_include"
     ],
     "7": [
+      "package",
+      "package_description",
+      "package_engines",
+      "package_engines_node",
+      "package_name",
+      "package_private",
+      "package_type",
+      "package_version"
+    ],
+    "8": [
       "scripts_copy_package",
       "scripts_copy_package_archive",
       "scripts_copy_package_unpacked"
     ],
-    "8": [
+    "9": [
+      "scripts_verify_package",
+      "scripts_verify_package_execfileasync"
+    ],
+    "10": [
       "site_public_sw",
       "site_public_sw_shell"
     ],
-    "9": [
+    "11": [
       "site_vite_config",
       "site_vite_config_siteroot"
     ],
-    "10": [
+    "12": [
       "tests_e2e_site_spec",
       "tests_e2e_site_spec_pages"
     ],
-    "11": [
+    "13": [
       "entrypoints_background"
     ],
-    "12": [
+    "14": [
       "playwright_config"
     ],
-    "13": [
+    "15": [
       "scripts_clean"
     ],
-    "14": [
+    "16": [
       "scripts_prepare_assets"
     ],
-    "15": [
+    "17": [
       "tests_e2e_extension_spec"
     ],
-    "16": [
+    "18": [
+      "tests_unit_static_deployment_test"
+    ],
+    "19": [
       "vitest_config"
     ],
-    "17": [
+    "20": [
       "wxt_config"
     ]
   },
   "cohesion": {
     "0": 0.08901515151515152,
-    "1": 0.08695652173913043,
-    "2": 0.09523809523809523,
-    "3": 0.23809523809523808,
-    "4": 0.19298245614035087,
+    "1": 0.09523809523809523,
+    "2": 0.23809523809523808,
+    "3": 0.1736842105263158,
+    "4": 0.11764705882352941,
     "5": 0.125,
     "6": 0.16666666666666666,
-    "7": 0.6666666666666666,
-    "8": 1.0,
+    "7": 0.25,
+    "8": 0.6666666666666666,
     "9": 1.0,
     "10": 1.0,
     "11": 1.0,
@@ -216,18 +228,21 @@
     "14": 1.0,
     "15": 1.0,
     "16": 1.0,
-    "17": 1.0
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0
   },
   "gods": [
     {
       "id": "entrypoints_content_main",
       "label": "main()",
-      "degree": 21
+      "degree": 22
     },
     {
       "id": "package_scripts",
       "label": "scripts",
-      "degree": 15
+      "degree": 17
     },
     {
       "id": "tsconfig_compileroptions",
@@ -235,19 +250,29 @@
       "degree": 10
     },
     {
-      "id": "entrypoints_content_main_openpane",
-      "label": "openPane()",
+      "id": "tsconfig_include",
+      "label": "include",
       "degree": 9
     },
     {
-      "id": "tsconfig_include",
-      "label": "include",
+      "id": "entrypoints_content_main_openpane",
+      "label": "openPane()",
       "degree": 9
     },
     {
       "id": "entrypoints_content_main_announce",
       "label": "announce()",
       "degree": 8
+    },
+    {
+      "id": "entrypoints_content_main_rendersource",
+      "label": "renderSource()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_onselect",
+      "label": "onSelect()",
+      "degree": 6
     },
     {
       "id": "entrypoints_content_main_beginselection",
@@ -257,16 +282,6 @@
     {
       "id": "entrypoints_content_main_cancelselection",
       "label": "cancelSelection()",
-      "degree": 6
-    },
-    {
-      "id": "entrypoints_content_main_onselect",
-      "label": "onSelect()",
-      "degree": 6
-    },
-    {
-      "id": "entrypoints_content_main_rendersource",
-      "label": "renderSource()",
       "degree": 6
     }
   ],
@@ -316,14 +331,14 @@
       "why": "connects across different repos/directories; bridges separate communities"
     },
     {
-      "source": "ReflowState",
-      "target": "ReflowPreferences",
+      "source": "verifyLicense()",
+      "target": "cachedVerdictIsFresh()",
       "source_files": [
-        "entrypoints/content.ts",
-        "lib/types.ts"
+        "site/src/main.ts",
+        "lib/license.ts"
       ],
       "confidence": "EXTRACTED",
-      "relation": "references",
+      "relation": "calls",
       "why": "connects across different repos/directories"
     }
   ],
