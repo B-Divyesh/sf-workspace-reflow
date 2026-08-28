@@ -27,13 +27,9 @@ describe('static deployment policy', () => {
 
   it('serves every generated AVIF with the interoperable image MIME type', async () => {
     const config = JSON.parse(await readFile('site/public/staticwebapp.config.json', 'utf8')) as {
-      routes: Array<{ route: string; headers?: Record<string, string> }>;
+      mimeTypes: Record<string, string>;
     };
-    const generatedAvifs = ['reflow-workbench-768.avif', 'reflow-workbench-1280.avif'];
 
-    for (const asset of generatedAvifs) {
-      const route = config.routes.find((candidate) => candidate.route === `/assets/${asset}`);
-      expect(route?.headers?.['Content-Type'], asset).toBe('image/avif');
-    }
+    expect(config.mimeTypes['.avif']).toBe('image/avif');
   });
 });

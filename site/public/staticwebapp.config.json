@@ -14,24 +14,13 @@
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "X-Content-Type-Options": "nosniff"
   },
+  "mimeTypes": {
+    ".avif": "image/avif"
+  },
   "routes": [
     {
       "route": "/build/*",
       "headers": { "Cache-Control": "public, max-age=31536000, immutable" }
-    },
-    {
-      "route": "/assets/reflow-workbench-768.avif",
-      "headers": {
-        "Cache-Control": "public, max-age=86400, must-revalidate",
-        "Content-Type": "image/avif"
-      }
-    },
-    {
-      "route": "/assets/reflow-workbench-1280.avif",
-      "headers": {
-        "Cache-Control": "public, max-age=86400, must-revalidate",
-        "Content-Type": "image/avif"
-      }
     },
     {
       "route": "/assets/*",
