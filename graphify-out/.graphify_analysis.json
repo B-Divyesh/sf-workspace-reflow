@@ -1,0 +1,334 @@
+{
+  "communities": {
+    "0": [
+      "entrypoints_popup_main",
+      "entrypoints_popup_main_licenseform",
+      "entrypoints_popup_main_licenseinput",
+      "entrypoints_popup_main_licensestatus",
+      "entrypoints_popup_main_loadstatus",
+      "entrypoints_popup_main_mustelement",
+      "entrypoints_popup_main_openbutton",
+      "entrypoints_popup_main_removebutton",
+      "entrypoints_popup_main_selectbutton",
+      "entrypoints_popup_main_send",
+      "entrypoints_popup_main_site",
+      "entrypoints_popup_main_status",
+      "entrypoints_popup_main_updatelicensestatus",
+      "lib_license",
+      "lib_license_cachedverdictisfresh",
+      "lib_license_checkout_url",
+      "lib_license_day_ms",
+      "lib_license_license_key",
+      "lib_license_licenseverdict",
+      "lib_license_product_slug",
+      "lib_license_requestlicenseverdict",
+      "lib_license_verdict_key",
+      "lib_license_verify_url",
+      "site_src_main",
+      "site_src_main_licenseinput",
+      "site_src_main_query",
+      "site_src_main_readverdict",
+      "site_src_main_returnedlicense",
+      "site_src_main_settheme",
+      "site_src_main_storedtheme",
+      "site_src_main_themebutton",
+      "site_src_main_verifylicense",
+      "tests_unit_license_test"
+    ],
+    "1": [
+      "package",
+      "package_description",
+      "package_engines",
+      "package_engines_node",
+      "package_name",
+      "package_private",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_build_extension",
+      "package_scripts_build_site",
+      "package_scripts_clean",
+      "package_scripts_dev",
+      "package_scripts_dev_site",
+      "package_scripts_package_extension",
+      "package_scripts_postinstall",
+      "package_scripts_prepare_assets",
+      "package_scripts_preview_site",
+      "package_scripts_test",
+      "package_scripts_test_e2e",
+      "package_scripts_test_unit",
+      "package_scripts_typecheck",
+      "package_type",
+      "package_version"
+    ],
+    "2": [
+      "axe_core_playwright",
+      "jsdom",
+      "package_devdependencies",
+      "package_devdependencies_axe_core_playwright",
+      "package_devdependencies_jsdom",
+      "package_devdependencies_playwright_core",
+      "package_devdependencies_playwright_test",
+      "package_devdependencies_sharp",
+      "package_devdependencies_types_chrome",
+      "package_devdependencies_typescript",
+      "package_devdependencies_vite",
+      "package_devdependencies_vitest",
+      "package_devdependencies_wxt",
+      "playwright_core",
+      "playwright_test",
+      "sharp",
+      "types_chrome",
+      "typescript",
+      "vite",
+      "vitest",
+      "wxt"
+    ],
+    "3": [
+      "entrypoints_content_main",
+      "entrypoints_content_main_announce",
+      "entrypoints_content_main_applypreferences",
+      "entrypoints_content_main_beginselection",
+      "entrypoints_content_main_cancelselection",
+      "entrypoints_content_main_chooseregion",
+      "entrypoints_content_main_closepane",
+      "entrypoints_content_main_findrule",
+      "entrypoints_content_main_navigate",
+      "entrypoints_content_main_onpointermove",
+      "entrypoints_content_main_onselect",
+      "entrypoints_content_main_openpane",
+      "entrypoints_content_main_opensavedrule",
+      "entrypoints_content_main_persistpreferences",
+      "entrypoints_content_main_previewtarget",
+      "entrypoints_content_main_removerule",
+      "entrypoints_content_main_rendersource",
+      "entrypoints_content_main_sanitizeclone",
+      "entrypoints_content_main_saverule",
+      "entrypoints_content_main_updatesentence",
+      "entrypoints_content_mustquery"
+    ],
+    "4": [
+      "entrypoints_content",
+      "entrypoints_content_reflowstate",
+      "lib_selector",
+      "lib_selector_createstableselector",
+      "lib_selector_describeelement",
+      "lib_selector_escapecss",
+      "lib_selector_stableattributes",
+      "lib_sentences",
+      "lib_sentences_segmentsentences",
+      "lib_sentences_wrapsentences",
+      "lib_types",
+      "lib_types_default_preferences",
+      "lib_types_preferences_key",
+      "lib_types_reflowpreferences",
+      "lib_types_rules_key",
+      "lib_types_siterule",
+      "lib_types_theme",
+      "tests_unit_selector_test",
+      "tests_unit_sentences_test"
+    ],
+    "5": [
+      "ref_chrome",
+      "ref_dom",
+      "ref_dom_iterable",
+      "ref_es2022",
+      "ref_node",
+      "ref_vitest_globals",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_lib",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_noemit",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_compileroptions_types",
+      "tsconfig_compileroptions_usedefineforclassfields"
+    ],
+    "6": [
+      "ref_entrypoints",
+      "ref_lib",
+      "ref_playwright_config_ts",
+      "ref_site",
+      "ref_tests",
+      "ref_vitest_config_ts",
+      "ref_wxt_config_ts",
+      "ref_wxt_tsconfig_json",
+      "ref_wxt_wxt_d_ts",
+      "tsconfig",
+      "tsconfig_extends",
+      "tsconfig_include"
+    ],
+    "7": [
+      "scripts_copy_package",
+      "scripts_copy_package_archive",
+      "scripts_copy_package_unpacked"
+    ],
+    "8": [
+      "site_public_sw",
+      "site_public_sw_shell"
+    ],
+    "9": [
+      "site_vite_config",
+      "site_vite_config_siteroot"
+    ],
+    "10": [
+      "tests_e2e_site_spec",
+      "tests_e2e_site_spec_pages"
+    ],
+    "11": [
+      "entrypoints_background"
+    ],
+    "12": [
+      "playwright_config"
+    ],
+    "13": [
+      "scripts_clean"
+    ],
+    "14": [
+      "scripts_prepare_assets"
+    ],
+    "15": [
+      "tests_e2e_extension_spec"
+    ],
+    "16": [
+      "vitest_config"
+    ],
+    "17": [
+      "wxt_config"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08901515151515152,
+    "1": 0.08695652173913043,
+    "2": 0.09523809523809523,
+    "3": 0.23809523809523808,
+    "4": 0.19298245614035087,
+    "5": 0.125,
+    "6": 0.16666666666666666,
+    "7": 0.6666666666666666,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0
+  },
+  "gods": [
+    {
+      "id": "entrypoints_content_main",
+      "label": "main()",
+      "degree": 21
+    },
+    {
+      "id": "package_scripts",
+      "label": "scripts",
+      "degree": 15
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 10
+    },
+    {
+      "id": "entrypoints_content_main_openpane",
+      "label": "openPane()",
+      "degree": 9
+    },
+    {
+      "id": "tsconfig_include",
+      "label": "include",
+      "degree": 9
+    },
+    {
+      "id": "entrypoints_content_main_announce",
+      "label": "announce()",
+      "degree": 8
+    },
+    {
+      "id": "entrypoints_content_main_rendersource",
+      "label": "renderSource()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_onselect",
+      "label": "onSelect()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_beginselection",
+      "label": "beginSelection()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_cancelselection",
+      "label": "cancelSelection()",
+      "degree": 6
+    }
+  ],
+  "surprises": [
+    {
+      "source": "renderSource()",
+      "target": "wrapSentences()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/sentences.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "openPane()",
+      "target": "describeElement()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/selector.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "onSelect()",
+      "target": "createStableSelector()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/selector.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "updateLicenseStatus()",
+      "target": "requestLicenseVerdict()",
+      "source_files": [
+        "entrypoints/popup/main.ts",
+        "lib/license.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; peripheral node `updateLicenseStatus()` unexpectedly reaches hub `requestLicenseVerdict()`"
+    },
+    {
+      "source": "ReflowState",
+      "target": "ReflowPreferences",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/types.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "references",
+      "why": "connects across different repos/directories"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
