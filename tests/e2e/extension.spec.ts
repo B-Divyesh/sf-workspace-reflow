@@ -79,3 +79,57 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
     await context.close();
   }
 });
+
+test('keyboard-only users can preview and choose a static reading region', async ({}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop-chromium', 'Extension keyboard test runs once in Chromium.');
+  const extensionPath = resolve('.output/chrome-mv3');
+  const context = await chromium.launchPersistentContext(testInfo.outputPath('keyboard-profile'), {
+    channel: 'chromium',
+    headless: true,
+    args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`]
+  });
+
+  try {
+    const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
+    const page = await context.newPage();
+    await page.goto('http://127.0.0.1:4173/');
+    await page.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
+    const installLink = page.getByRole('link', { name: 'Installation steps' });
+    await installLink.focus();
+
+    await worker.evaluate(async () => {
+      const tabs = await chrome.tabs.query({});
+      const target = tabs.find((tab) => tab.url?.startsWith('http://127.0.0.1:4173'));
+      if (!target?.id) throw new Error('Test page tab not found');
+      await chrome.tabs.sendMessage(target.id, { type: 'workspace-reflow:select' });
+    });
+
+    const help = page.locator('#workspace-reflow-root .wr-select-help');
+    await expect(help).toBeVisible();
+    await expect(help).toContainText('Tab or arrows preview regions');
+    await page.keyboard.press('Tab');
+    await expect(page.locator('main')).toHaveCSS('outline-style', 'solid');
+    await page.keyboard.press('Enter');
+
+    const pane = page.locator('#workspace-reflow-root .wr-pane');
+    await expect(pane).toHaveAttribute('aria-hidden', 'false');
+    await expect(page.locator('#workspace-reflow-root .wr-close')).toBeFocused();
+    await expect(page.locator('#workspace-reflow-root .wr-reading')).not.toBeEmpty();
+
+    const toolbarSizes = await page.locator('#workspace-reflow-root .wr-tools button').evaluateAll((buttons) => buttons.map((button) => {
+      const bounds = button.getBoundingClientRect();
+      return { width: bounds.width, height: bounds.height };
+    }));
+    expect(toolbarSizes).toHaveLength(8);
+    for (const size of toolbarSizes) {
+      expect(size.width).toBeGreaterThanOrEqual(44);
+      expect(size.height).toBeGreaterThanOrEqual(44);
+    }
+
+    await page.keyboard.press('Escape');
+    await expect(pane).toHaveAttribute('aria-hidden', 'true');
+    await expect(installLink).toBeFocused();
+  } finally {
+    await context.close();
+  }
+});

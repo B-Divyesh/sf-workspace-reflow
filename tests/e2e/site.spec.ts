@@ -21,6 +21,16 @@ for (const pageCase of pages) {
     await expect(page.getByRole('heading', { level: 1 })).toContainText(pageCase.heading);
     const results = await new AxeBuilder({ page }).analyze();
     expect(results.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
+    const targetSizes = await page.locator('.site-header a, .site-footer a').evaluateAll((links) => links
+      .filter((link) => (link as HTMLElement).offsetParent !== null)
+      .map((link) => {
+        const bounds = link.getBoundingClientRect();
+        return { label: link.textContent?.trim(), width: bounds.width, height: bounds.height };
+      }));
+    for (const target of targetSizes) {
+      expect(target.width, `${target.label} target width`).toBeGreaterThanOrEqual(44);
+      expect(target.height, `${target.label} target height`).toBeGreaterThanOrEqual(44);
+    }
     expect(errors).toEqual([]);
   });
 }

@@ -32,6 +32,8 @@ export default defineContentScript({
     let selectionPreviousOutline = '';
     let selectionPreviousOutlineOffset = '';
     let selectionActive = false;
+    let keyboardCandidates: HTMLElement[] = [];
+    let keyboardCandidateIndex = -1;
     let refreshTimer = 0;
 
     const host = document.createElement('div');
@@ -42,7 +44,7 @@ export default defineContentScript({
     shadow.innerHTML = `<style>${PANE_CSS}</style>
       <div class="wr-announcer" aria-live="polite" aria-atomic="true"></div>
       <div class="wr-select-help" role="status" hidden>
-        <strong>Select a reading region</strong><span>Move to preview · click to reflow · Esc to cancel</span>
+        <strong>Select a reading region</strong><span>Tab or arrows preview regions · Enter or Space reflows · pointer click also works · Esc cancels</span>
       </div>
       <aside class="wr-pane" aria-label="Reflow reading pane" aria-hidden="true">
         <header class="wr-header">
@@ -143,7 +145,7 @@ export default defineContentScript({
       }
       const count = state.sentences.length;
       position.textContent = `Sentence ${state.sentenceIndex + 1} of ${count}`;
-      if (scroll) state.sentences[state.sentenceIndex]?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      if (scroll) state.sentences[state.sentenceIndex]?.scrollIntoView({ block: 'center', behavior: preferredScrollBehavior() });
       announce(position.textContent);
     }
 
@@ -217,6 +219,39 @@ export default defineContentScript({
       return candidate;
     }
 
+    function findKeyboardCandidates(): HTMLElement[] {
+      const selector = 'article, section, main, aside, [role="region"], [role="main"], [role="list"], [role="feed"], table, ul, ol, dl';
+      return Array.from(document.querySelectorAll<HTMLElement>(selector)).filter((candidate) => {
+        if (host.contains(candidate) || candidate.closest('[aria-hidden="true"], [inert]')) return false;
+        if (!(candidate.textContent?.trim())) return false;
+        const bounds = candidate.getBoundingClientRect();
+        return bounds.width > 0 && bounds.height > 0;
+      });
+    }
+
+    function describeKeyboardCandidate(candidate: HTMLElement): string {
+      const label = describeElement(candidate);
+      return `${label}, region ${keyboardCandidateIndex + 1} of ${keyboardCandidates.length}. Press Enter or Space to reflow.`;
+    }
+
+    function moveKeyboardCandidate(delta: number) {
+      if (!keyboardCandidates.length) {
+        announce('No readable regions were found. Press Escape and try another page.');
+        return;
+      }
+      keyboardCandidateIndex = (keyboardCandidateIndex + delta + keyboardCandidates.length) % keyboardCandidates.length;
+      const candidate = keyboardCandidates[keyboardCandidateIndex];
+      if (!candidate) return;
+      previewTarget(candidate);
+      candidate.scrollIntoView({ block: 'nearest', behavior: preferredScrollBehavior() });
+      announce(describeKeyboardCandidate(candidate));
+    }
+
+    function selectRegion(region: HTMLElement) {
+      const selector = createStableSelector(region);
+      void openPane(region, selector);
+    }
+
     function onPointerMove(event: MouseEvent) {
       const target = event.target;
       if (target instanceof HTMLElement && !host.contains(target)) previewTarget(chooseRegion(target));
@@ -227,9 +262,7 @@ export default defineContentScript({
       if (!(target instanceof HTMLElement) || host.contains(target)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      const region = chooseRegion(target);
-      const selector = createStableSelector(region);
-      void openPane(region, selector);
+      selectRegion(chooseRegion(target));
     }
 
     function beginSelection() {
@@ -244,11 +277,15 @@ export default defineContentScript({
       }
       selectionActive = true;
       previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      keyboardCandidates = findKeyboardCandidates();
+      keyboardCandidateIndex = -1;
       selectHelp.hidden = false;
       document.documentElement.style.cursor = 'crosshair';
       document.addEventListener('mousemove', onPointerMove, true);
       document.addEventListener('click', onSelect, true);
-      announce('Selection mode. Move to a region and click. Press Escape to cancel.');
+      announce(keyboardCandidates.length
+        ? `Selection mode. ${keyboardCandidates.length} readable regions found. Press Tab or an arrow key to preview, then Enter or Space to reflow. Press Escape to cancel.`
+        : 'Selection mode. No readable regions were found. You can still point and click, or press Escape to cancel.');
     }
 
     function cancelSelection() {
@@ -259,6 +296,8 @@ export default defineContentScript({
       document.removeEventListener('mousemove', onPointerMove, true);
       document.removeEventListener('click', onSelect, true);
       previewTarget(null);
+      keyboardCandidates = [];
+      keyboardCandidateIndex = -1;
     }
 
     async function saveRule() {
@@ -326,9 +365,25 @@ export default defineContentScript({
     });
 
     document.addEventListener('keydown', (event) => {
+      if (selectionActive) {
+        if (event.key === 'Escape') {
+          event.preventDefault();
+          cancelSelection();
+          announce('Selection cancelled.');
+        } else if (event.key === 'Tab' || event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          const backwards = event.shiftKey || event.key === 'ArrowUp' || event.key === 'ArrowLeft';
+          moveKeyboardCandidate(backwards ? -1 : 1);
+        } else if ((event.key === 'Enter' || event.key === ' ') && selectionTarget) {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          selectRegion(selectionTarget);
+        }
+        return;
+      }
       if (event.key === 'Escape') {
-        if (selectionActive) cancelSelection();
-        else closePane();
+        closePane();
         return;
       }
       if (!host.dataset.open || event.altKey || event.ctrlKey || event.metaKey) return;
@@ -375,6 +430,10 @@ function mustQuery<T extends Element>(root: ParentNode, selector: string): T {
   return element;
 }
 
+function preferredScrollBehavior(): ScrollBehavior {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
 /**
  * Sentence shortcuts belong to the pane, never to an editor in the underlying
  * workspace. Rich editors often use a contenteditable descendant or an ARIA
@@ -408,9 +467,9 @@ const PANE_CSS = `
   .wr-title { margin:3px 0 0; font:900 24px/1 Arial Black,Arial,sans-serif; }
   .wr-close { box-shadow:3px 3px 0 #151713; }
   .wr-tools { display:flex; flex-wrap:wrap; gap:10px 12px; padding:12px 20px; border-bottom:2px solid currentColor; background:inherit; }
-  .wr-tools fieldset { display:flex; margin:0; padding:0; border:0; gap:4px; }
+  .wr-tools fieldset { display:flex; margin:0; padding:0; border:0; gap:8px; }
   .wr-tools legend { position:absolute; width:1px; height:1px; clip:rect(0 0 0 0); overflow:hidden; }
-  .wr-tools button { min-height:40px; }
+  .wr-tools button { min-width:44px; min-height:44px; }
   .wr-tools [aria-pressed="true"] { background:#2457f5; color:#fff; }
   .wr-save { background:#147a45; color:#fff; }
   .wr-context { display:flex; justify-content:space-between; gap:16px; padding:10px 20px; font:14px/1.4 Verdana,sans-serif; background:color-mix(in srgb,currentColor 7%,transparent); }

@@ -10,7 +10,8 @@ Live product page: <https://workspace-reflow.sociobot.in>
 
 ## What v1 includes
 
-- Point-and-click selection with a visible preview and Escape cancellation
+- Pointer selection plus a keyboard region cursor: Tab/arrows preview, Enter or
+  Space chooses, and Escape cancels
 - Semantic DOM reflow; no screenshots, OCR, remote page processing, paywall
   bypass, or DRM bypass
 - 20, 24, and 28 px reading sizes; three line measures; light and dark panes
@@ -40,10 +41,11 @@ once before `npm test`.
 
 ## Production build
 
-The work-order build command is exactly:
+Both factory build entry points create the complete deployable site and package:
 
 ```sh
 npm run build
+npm run build:site
 ```
 
 It produces:
@@ -63,8 +65,9 @@ The prompt, source image, and model provenance are in `assets/src/` and
 
 `npm test` runs TypeScript/lint checks, unit tests, a clean production build,
 package-consumer archive validation, axe-assisted desktop and
-390 px site checks, and an actual Chromium extension workflow covering select,
-reflow, sentence navigation, save, automatic reopen, Escape, and focus return.
+390 px site checks, and actual Chromium extension workflows covering pointer and
+keyboard-only region selection, 44 px targets, reflow, sentence navigation,
+save, automatic reopen, Escape, and focus return.
 
 The extension uses `browser.storage.local` for rules, preferences, and an
 optional license. Page content never leaves the device. The product website has
