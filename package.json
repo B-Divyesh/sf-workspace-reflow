@@ -14,21 +14,23 @@
     "package:extension": "wxt zip && node scripts/copy-package.mjs",
     "build": "npm run clean && npm run build:extension && npm run build:site && npm run package:extension",
     "preview:site": "vite preview --config site/vite.config.ts",
+    "prepare:assets": "node scripts/prepare-assets.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test": "npm run test:unit && npm run build && npm run test:e2e",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "@axe-core/playwright": "4.10.2",
+    "@axe-core/playwright": "4.13.0",
     "@playwright/test": "1.58.2",
     "@types/chrome": "0.0.287",
     "jsdom": "25.0.1",
     "playwright-core": "1.58.2",
+    "sharp": "0.35.4",
     "typescript": "5.7.3",
-    "vite": "6.0.11",
-    "vitest": "2.1.9",
-    "wxt": "0.20.6"
+    "vite": "8.2.2",
+    "vitest": "4.1.11",
+    "wxt": "0.21.4"
   },
   "engines": {
     "node": ">=20"

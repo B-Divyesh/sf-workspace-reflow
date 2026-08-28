@@ -6,7 +6,7 @@ export default defineConfig({
     description: 'Pin one live workspace region into a large, keyboard-first reading pane.',
     version: '1.0.0',
     permissions: ['activeTab', 'storage'],
-    host_permissions: ['<all_urls>', 'https://api.sociobot.in/*'],
+    host_permissions: ['http://*/*', 'https://*/*'],
     action: {
       default_title: 'Open Workspace Reflow',
       default_icon: {

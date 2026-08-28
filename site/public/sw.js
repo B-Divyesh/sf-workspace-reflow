@@ -1,5 +1,5 @@
 const CACHE = 'workspace-reflow-site-v1';
-const SHELL = ['/', '/privacy/', '/terms/', '/mark.svg', '/assets/reflow-workbench-768.webp'];
+const SHELL = ['/', '/privacy/', '/terms/', '/mark.svg', '/assets/main.css', '/assets/main.js', '/assets/reflow-workbench-768.webp'];
 self.addEventListener('install', (event) => event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(SHELL))));
 self.addEventListener('activate', (event) => event.waitUntil(caches.keys().then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))));
 self.addEventListener('fetch', (event) => {
@@ -8,5 +8,5 @@ self.addEventListener('fetch', (event) => {
     const copy = response.clone();
     caches.open(CACHE).then((cache) => cache.put(event.request, copy));
     return response;
-  }).catch(() => caches.match('/'))));
+  }).catch(() => event.request.mode === 'navigate' ? caches.match('/') : Response.error())));
 });

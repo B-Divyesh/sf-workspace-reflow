@@ -97,3 +97,5 @@ no tiny illegible pseudo-text.
 Generated with the factory image deployment (`factory-image`) through
 `/opt/fleet/lib/gen-image.sh` on 2026-08-28. The output is original for this
 product. The selected source and exact prompt are stored in `assets/src/`.
+Production derivatives are responsive AVIF and WebP files with a JPEG fallback;
+each shipped hero variant remains below the 300 KB mobile-image budget.

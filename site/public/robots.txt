@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://workspace-reflow.sociobot.in/sitemap.xml

@@ -30,6 +30,7 @@ export default defineContentScript({
     let observedSource: MutationObserver | null = null;
     let selectionTarget: HTMLElement | null = null;
     let selectionPreviousOutline = '';
+    let selectionPreviousOutlineOffset = '';
     let selectionActive = false;
     let refreshTimer = 0;
 
@@ -193,10 +194,14 @@ export default defineContentScript({
 
     function previewTarget(target: HTMLElement | null) {
       if (selectionTarget === target) return;
-      if (selectionTarget) selectionTarget.style.outline = selectionPreviousOutline;
+      if (selectionTarget) {
+        selectionTarget.style.outline = selectionPreviousOutline;
+        selectionTarget.style.outlineOffset = selectionPreviousOutlineOffset;
+      }
       selectionTarget = target;
       if (target) {
         selectionPreviousOutline = target.style.outline;
+        selectionPreviousOutlineOffset = target.style.outlineOffset;
         target.style.outline = SELECTED_OUTLINE;
         target.style.outlineOffset = '3px';
       }
@@ -228,6 +233,11 @@ export default defineContentScript({
     }
 
     function beginSelection() {
+      if (selectionActive) {
+        cancelSelection();
+        announce('Selection cancelled.');
+        return;
+      }
       if (host.dataset.open) {
         closePane();
         return;

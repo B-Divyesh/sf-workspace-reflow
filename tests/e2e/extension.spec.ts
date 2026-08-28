@@ -1,4 +1,5 @@
 import { chromium, expect, test } from '@playwright/test';
+import AxeBuilder from '@axe-core/playwright';
 import { resolve } from 'node:path';
 
 test('the packaged extension selects, reflows, saves, navigates, and restores focus', async ({}, testInfo) => {
@@ -12,6 +13,7 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
 
   try {
     const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
+    const extensionId = new URL(worker.url()).host;
     const page = await context.newPage();
     await page.goto('http://127.0.0.1:4173/');
     await page.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
@@ -40,6 +42,12 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
     await page.reload();
     await page.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
     await expect(page.locator('#workspace-reflow-root .wr-pane')).toHaveAttribute('aria-hidden', 'false');
+
+    const popup = await context.newPage();
+    await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+    await expect(popup.getByRole('heading', { level: 1 })).toHaveText('Workspace Reflow');
+    const accessibility = await new AxeBuilder({ page: popup }).analyze();
+    expect(accessibility.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
   } finally {
     await context.close();
   }
