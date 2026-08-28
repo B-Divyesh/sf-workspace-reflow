@@ -1,0 +1,11 @@
+{
+  "slug": "workspace-reflow",
+  "title": "Workspace Reflow",
+  "territory": "utilities",
+  "user": "Knowledge workers with low vision who need to read dense web-app panes without losing the task context around them.",
+  "smallest_useful_product": "Browser extension: user selects a DOM region, opens a high-contrast reflow pane with font/line-width presets and keyboard sentence navigation, and saves a per-site rule.",
+  "artifact_class": "browser-extension",
+  "monetization": "one-time",
+  "constraints": "All DOM processing stays on device; do not bypass paywalls or DRM; preserve keyboard focus and ARIA semantics; support a one-key escape hatch.",
+  "source": "Factory work order workspace-reflow-build-1"
+}
