@@ -30,6 +30,9 @@ test('the packaged extension selects, reflows, saves, navigates, and restores fo
     const pane = page.locator('#workspace-reflow-root .wr-pane');
     await expect(pane).toHaveAttribute('aria-hidden', 'false');
     await expect(page.locator('#workspace-reflow-root .wr-reading')).toContainText('Zoom the task');
+    await page.locator('#workspace-reflow-root .wr-theme').click();
+    const paneAccessibility = await new AxeBuilder({ page }).analyze();
+    expect(paneAccessibility.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
 
     await page.locator('#workspace-reflow-root .wr-save').click();
     await expect(page.locator('#workspace-reflow-root .wr-save')).toContainText('Saved');
