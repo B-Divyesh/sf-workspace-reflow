@@ -2,7 +2,7 @@ import { chromium, expect, test } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { resolve } from 'node:path';
 
-test('@claim:local-processing @claim:escape-close @claim:semantic-reflow @claim:live-refresh the packaged extension completes its core workflow', async ({}, testInfo) => {
+test('@claim:local-processing @claim:escape-close @claim:semantic-reflow @claim:live-refresh @claim:pointer-selection @claim:sentence-navigation @claim:free-reading @claim:data-deletion the packaged extension completes its core workflow', async ({}, testInfo) => {
   test.skip(testInfo.project.name !== 'desktop-chromium', 'Extension smoke test runs once in Chromium.');
   const extensionPath = resolve('.output/chrome-mv3');
   const context = await chromium.launchPersistentContext(testInfo.outputPath('profile'), {
@@ -21,21 +21,40 @@ test('@claim:local-processing @claim:escape-close @claim:semantic-reflow @claim:
     const page = await context.newPage();
     await page.goto('http://127.0.0.1:4173/');
     await page.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
-    const installLink = page.getByRole('link', { name: 'Download for Chrome' });
+    await expect(page.locator('#support')).toContainText('Every reflow, preference, saved rule, and keyboard feature is free.');
+    await expect(page.locator('a[href*="/checkout"]')).toHaveCount(0);
+    expect(await worker.evaluate(async () => (await chrome.storage.local.get('workspaceReflow.license'))['workspaceReflow.license'])).toBeUndefined();
+    await page.evaluate(() => {
+      document.querySelector('#how')?.insertAdjacentHTML('beforeend', `
+        <div class="semantic-fixture">
+          <a href="#install">Install Workspace Reflow</a>
+          <label for="semantic-query">Workspace query</label>
+          <input id="semantic-query" value="Release status" />
+          <img src="/mark.svg" alt="Workspace Reflow selection mark" />
+        </div>
+      `);
+    });
+    const installLink = page.locator('body > main').getByRole('link', { name: 'Download for Chrome' });
     await installLink.focus();
 
+    expect(await worker.evaluate(async () => (await chrome.commands.getAll()).find((command) => command.name === 'toggle-reflow')?.shortcut)).toBe('Alt+Shift+R');
     await worker.evaluate(async () => {
       const tabs = await chrome.tabs.query({});
       const target = tabs.find((tab) => tab.url?.startsWith('http://127.0.0.1:4173'));
       if (!target?.id) throw new Error('Test page tab not found');
       await chrome.tabs.sendMessage(target.id, { type: 'workspace-reflow:select' });
     });
+    await expect(page.locator('#workspace-reflow-root .wr-select-help')).toBeVisible();
     await page.locator('#how-title').click();
     const pane = page.locator('#workspace-reflow-root .wr-pane');
     await expect(pane).toHaveAttribute('aria-hidden', 'false');
     const reading = page.locator('#workspace-reflow-root .wr-reading');
     await expect(reading.getByRole('heading', { level: 2 })).toHaveText('How Workspace Reflow works');
     await expect(reading.locator('ol > li')).toHaveCount(3);
+    await expect(reading.getByRole('link', { name: 'Install Workspace Reflow' })).toHaveAttribute('href', '#install');
+    await expect(reading.getByLabel('Workspace query')).toHaveValue('Release status');
+    await expect(reading.getByRole('img', { name: 'Workspace Reflow selection mark' })).toHaveAttribute('alt', 'Workspace Reflow selection mark');
+    for (const control of await page.locator('#workspace-reflow-root .wr-tools button').all()) await expect(control).toBeEnabled();
     await page.evaluate(() => document.querySelector('#main > #how')?.insertAdjacentHTML('beforeend', '<p>Quarterly planning update received.</p>'));
     await expect(reading).toContainText('Quarterly planning update received.');
     await page.locator('#workspace-reflow-root .wr-theme').click();
@@ -68,10 +87,25 @@ test('@claim:local-processing @claim:escape-close @claim:semantic-reflow @claim:
     await page.locator('#workspace-reflow-root .wr-save').click();
     await expect(page.locator('#workspace-reflow-root .wr-save')).toContainText('Saved');
     const savedRule = await worker.evaluate(async () => (await chrome.storage.local.get('workspaceReflow.rules'))['workspaceReflow.rules']?.[0]);
+    expect(Object.keys(savedRule).sort()).toEqual(['label', 'origin', 'preferences', 'selector', 'updatedAt']);
+    expect(savedRule).toMatchObject({
+      origin: 'http://127.0.0.1:4173',
+      selector: '#how',
+      label: 'How Workspace Reflow works'
+    });
     expect(JSON.stringify(savedRule)).not.toContain('Quarterly planning update received.');
     await page.locator('#workspace-reflow-root .wr-reading').focus();
     await page.keyboard.press('j');
-    await expect(page.locator('#workspace-reflow-root .wr-position')).toContainText('Sentence 1 of');
+    const position = page.locator('#workspace-reflow-root .wr-position');
+    const announcer = page.locator('#workspace-reflow-root .wr-announcer');
+    await expect(position).toContainText('Sentence 1 of');
+    await expect(announcer).toContainText('Sentence 1 of');
+    await page.keyboard.press('ArrowDown');
+    await expect(position).toContainText('Sentence 2 of');
+    await page.keyboard.press('k');
+    await expect(position).toContainText('Sentence 1 of');
+    await page.keyboard.press('ArrowUp');
+    await expect(position).toContainText('Sentence 1 of');
     await page.keyboard.press('Escape');
     await expect(pane).toHaveAttribute('aria-hidden', 'true');
     await expect(installLink).toBeFocused();
@@ -96,6 +130,18 @@ test('@claim:local-processing @claim:escape-close @claim:semantic-reflow @claim:
     await expect(licenseStatus).toHaveText('Paste the license token from your receipt.');
     await expect(licenseInput).toHaveAttribute('aria-invalid', 'true');
     await expect(licenseInput).toBeFocused();
+    await worker.evaluate(async () => {
+      const tabs = await chrome.tabs.query({});
+      const target = tabs.find((tab) => tab.url?.startsWith('http://127.0.0.1:4173'));
+      if (!target?.id) throw new Error('Test page tab not found');
+      await chrome.tabs.update(target.id, { active: true });
+    });
+    await popup.reload();
+    const removeRuleButton = popup.getByRole('button', { name: 'Forget saved region' });
+    await expect(removeRuleButton).toBeVisible();
+    await removeRuleButton.click();
+    await expect(popup.locator('#status')).toContainText('Saved region removed.');
+    expect(await worker.evaluate(async () => (await chrome.storage.local.get('workspaceReflow.rules'))['workspaceReflow.rules'])).toEqual([]);
     const accessibility = await new AxeBuilder({ page: popup }).analyze();
     expect(accessibility.violations.filter((item) => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
     expect(new Set(httpRequests.map((request) => new URL(request.url).origin))).toEqual(new Set(['http://127.0.0.1:4173']));
@@ -263,7 +309,7 @@ test('saved-rule recovery does not stop before a late SPA region appears', async
   }
 });
 
-test('@claim:keyboard-selection keyboard-only users can preview and choose a static reading region', async ({}, testInfo) => {
+test('@claim:keyboard-selection @claim:selection-cancel @claim:context-preserved @claim:mobile-pane keyboard-only users can preview and choose a static reading region', async ({}, testInfo) => {
   const mobile = testInfo.project.name === 'mobile-chromium';
   const extensionPath = resolve('.output/chrome-mv3');
   const context = await chromium.launchPersistentContext(testInfo.outputPath('keyboard-profile'), {
@@ -278,7 +324,7 @@ test('@claim:keyboard-selection keyboard-only users can preview and choose a sta
     const page = await context.newPage();
     await page.goto('http://127.0.0.1:4173/');
     await page.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
-    const installLink = page.getByRole('link', { name: 'Download for Chrome' });
+    const installLink = page.locator('body > main').getByRole('link', { name: 'Download for Chrome' });
     await installLink.focus();
 
     await worker.evaluate(async () => {
@@ -291,9 +337,9 @@ test('@claim:keyboard-selection keyboard-only users can preview and choose a sta
     const help = page.locator('#workspace-reflow-root .wr-select-help');
     await expect(help).toBeVisible();
     await expect(help).toContainText('Tab or arrows preview regions');
-    await page.keyboard.press('Tab');
+    await page.keyboard.press(mobile ? 'ArrowDown' : 'Tab');
     await expect(page.locator('main')).toHaveCSS('outline-style', 'solid');
-    await page.keyboard.press('Enter');
+    await page.keyboard.press(mobile ? 'Space' : 'Enter');
 
     const pane = page.locator('#workspace-reflow-root .wr-pane');
     await expect(pane).toHaveAttribute('aria-hidden', 'false');
@@ -301,6 +347,14 @@ test('@claim:keyboard-selection keyboard-only users can preview and choose a sta
     await expect(page.locator('#workspace-reflow-root .wr-reading')).not.toBeEmpty();
     const paneBox = await pane.boundingBox();
     expect(Math.round(paneBox?.width ?? 0)).toBeLessThanOrEqual(mobile ? 390 : 860);
+    if (mobile) {
+      expect(Math.round(paneBox?.x ?? -1)).toBe(0);
+      expect(Math.round(paneBox?.width ?? 0)).toBe(390);
+    } else {
+      const sourceControl = await installLink.boundingBox();
+      expect(sourceControl).not.toBeNull();
+      expect((sourceControl?.x ?? 0) + (sourceControl?.width ?? 0)).toBeLessThan(paneBox?.x ?? 0);
+    }
 
     const toolbarSizes = await page.locator('#workspace-reflow-root .wr-tools button').evaluateAll((buttons) => buttons.map((button) => {
       const bounds = button.getBoundingClientRect();
@@ -315,6 +369,53 @@ test('@claim:keyboard-selection keyboard-only users can preview and choose a sta
     await page.keyboard.press('Escape');
     await expect(pane).toHaveAttribute('aria-hidden', 'true');
     await expect(installLink).toBeFocused();
+
+    await worker.evaluate(async () => {
+      const tabs = await chrome.tabs.query({});
+      const target = tabs.find((tab) => tab.url?.startsWith('http://127.0.0.1:4173'));
+      if (!target?.id) throw new Error('Test page tab not found');
+      await chrome.tabs.sendMessage(target.id, { type: 'workspace-reflow:select' });
+    });
+    await expect(help).toBeVisible();
+    await page.keyboard.press('Escape');
+    await expect(help).toBeHidden();
+    await expect(pane).toHaveAttribute('aria-hidden', 'true');
+  } finally {
+    await context.close();
+  }
+});
+
+test('@claim:supported-pages ordinary websites load the extension while browser-internal pages reject its content message', async ({}, testInfo) => {
+  test.skip(testInfo.project.name !== 'desktop-chromium', 'Page-scope coverage runs once in Chromium.');
+  const extensionPath = resolve('.output/chrome-mv3');
+  const context = await chromium.launchPersistentContext(testInfo.outputPath('page-scope-profile'), {
+    channel: 'chromium',
+    headless: true,
+    args: [`--disable-extensions-except=${extensionPath}`, `--load-extension=${extensionPath}`]
+  });
+
+  try {
+    const worker = context.serviceWorkers()[0] ?? await context.waitForEvent('serviceworker');
+    const webPage = await context.newPage();
+    await webPage.goto('http://127.0.0.1:4173/');
+    await webPage.locator('#workspace-reflow-root').waitFor({ state: 'attached' });
+    const internalPage = await context.newPage();
+    await internalPage.goto('about:blank');
+    await internalPage.bringToFront();
+    const internalAcceptedMessage = await worker.evaluate(async () => {
+      const matches = chrome.runtime.getManifest().content_scripts?.flatMap((script) => script.matches ?? []);
+      if (JSON.stringify(matches) !== JSON.stringify(['http://*/*', 'https://*/*'])) throw new Error(`Unexpected content-script scope: ${JSON.stringify(matches)}`);
+      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      const target = tabs[0];
+      if (!target?.id) throw new Error('Browser-internal test tab not found');
+      try {
+        await chrome.tabs.sendMessage(target.id, { type: 'workspace-reflow:select' });
+        return true;
+      } catch {
+        return false;
+      }
+    });
+    expect(internalAcceptedMessage).toBe(false);
   } finally {
     await context.close();
   }

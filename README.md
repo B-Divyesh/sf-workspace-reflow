@@ -9,22 +9,22 @@ context around it.
 Live product page: <https://workspace-reflow.sociobot.in>
 
 One-click sample: <https://workspace-reflow.sociobot.in/demo/>. It opens a
-fictional release workspace, stores nothing, and needs no extension install.
+fictional release workspace, stores nothing, and needs no account or extension
+install.
 
 ## What v1 includes
 
 - Pointer selection plus a keyboard region cursor: Tab/arrows preview, Enter or
   Space chooses, and Escape cancels
-- Semantic DOM reflow; no screenshots, OCR, remote page processing, paywall
-  bypass, or DRM bypass
+- Semantic DOM reflow that preserves headings, lists, links, form labels, and
+  image text alternatives from the selected region
 - 20, 24, and 28 px reading sizes; three line measures; light and dark panes
 - `J`/`K` and Up/Down sentence navigation with announced position
 - One local rule per site, automatic reopening, and live-region refreshes
-- Focus return on close, a full-screen mobile pane, and clear restricted-page,
-  empty, stale-rule, and offline-license states
+- Focus return on close and a full-screen pane at narrow widths
 - All accessibility features remain free. Supporter checkout is intentionally
   hidden until the Sociobot product is enabled; previously issued licenses can
-  still be restored and verified locally.
+  still be restored and checked.
 
 ## Local development
 
@@ -76,7 +76,7 @@ The prompt, source image, and model provenance are in `assets/src/` and
 
 ## Testing
 
-`npm test` runs TypeScript/lint checks, unit tests, a clean production build,
+`npm test` runs TypeScript and lint checks, unit tests, a clean production build,
 package-consumer archive validation, axe-assisted desktop and
 390 px site checks, and actual Chromium extension workflows covering pointer and
 keyboard-only region selection, 44 px targets, reflow, sentence navigation,

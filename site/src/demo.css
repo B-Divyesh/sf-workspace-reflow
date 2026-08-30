@@ -26,6 +26,7 @@
 .demo-tools { display:flex; flex-wrap:wrap; gap:12px; padding:14px 20px; border-bottom:2px solid currentColor; }
 .demo-tools fieldset { display:flex; gap:6px; margin:0; padding:0; border:0; }
 .demo-tools legend { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); }
+.demo-tools button { min-width:44px; }
 .demo-tools button[aria-pressed="true"] { background:#ffd53d; color:#151713; box-shadow:3px 3px 0 currentColor; }
 .demo-reading { width:min(100%,var(--demo-measure)); margin:0 auto; padding:34px 28px; font-size:var(--demo-font); line-height:1.65; }
 .demo-reading h3 { font-size:1.35em; }

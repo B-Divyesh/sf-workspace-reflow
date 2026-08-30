@@ -37,7 +37,22 @@ for (const pageCase of pages) {
   });
 }
 
-test('@claim:package-download @claim:first-party-site home page supports keyboard, download, theme, and 390px layout', async ({ page }) => {
+test('every visible demo control meets the 44px target minimum', async ({ page }) => {
+  await page.goto('/demo/');
+  const controls = await page.locator('a, button, input, summary').evaluateAll((elements) => elements
+    .filter((element) => (element as HTMLElement).offsetParent !== null)
+    .map((element) => {
+      const bounds = element.getBoundingClientRect();
+      return { label: element.textContent?.trim() || element.getAttribute('aria-label') || element.tagName, width: bounds.width, height: bounds.height };
+    }));
+
+  for (const control of controls) {
+    expect(control.width, `${control.label} target width`).toBeGreaterThanOrEqual(44);
+    expect(control.height, `${control.label} target height`).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('@claim:package-download @claim:first-party-site home page supports keyboard, download, theme, and 390px layout', async ({ page, context }) => {
   const outgoing: string[] = [];
   page.on('request', (request) => outgoing.push(request.url()));
   await page.goto('/');
@@ -54,9 +69,11 @@ test('@claim:package-download @claim:first-party-site home page supports keyboar
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth);
   expect(overflow).toBe(false);
   expect(new Set(outgoing.filter((url) => /^https?:/.test(url)).map((url) => new URL(url).origin))).toEqual(new Set(['http://127.0.0.1:4173']));
+  expect(await context.cookies()).toEqual([]);
+  expect(await page.evaluate(() => Object.keys(localStorage).sort())).toEqual(['workspaceReflow.theme']);
 });
 
-test('@claim:demo-sandbox sample data opens in one click without changing stored data', async ({ page }) => {
+test('@claim:demo-sandbox @claim:no-account sample data opens in one click without changing stored data or requiring an account', async ({ page, context }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('real:user-data', 'keep'));
   await page.getByRole('link', { name: 'Try it with sample data' }).click();
@@ -71,10 +88,46 @@ test('@claim:demo-sandbox sample data opens in one click without changing stored
   await expect(page.locator('#demo-position')).toHaveText('Sentence 1 of 4');
   await expect(page.locator('.demo-pane')).toHaveAttribute('data-theme', 'dark');
   expect(await page.evaluate(() => ({ ...localStorage }))).toEqual({ 'real:user-data': 'keep' });
+  expect(await context.cookies()).toEqual([]);
+  const archive = await page.request.get('/downloads/workspace-reflow-chrome.zip');
+  expect(archive.ok()).toBe(true);
+  expect(archive.url()).toBe('http://127.0.0.1:4173/downloads/workspace-reflow-chrome.zip');
   await page.getByRole('button', { name: 'Reset demo' }).click();
   await expect(page.locator('#demo-position')).toHaveText('Press Next sentence or J to begin');
   await page.goto('/?demo=1');
   await expect(page).toHaveURL(/\/demo\/$/);
+});
+
+test('@claim:license-restore returned licenses are stored, removed from the address bar, and verified', async ({ page }) => {
+  const verificationRequests: string[] = [];
+  await page.route('https://api.sociobot.in/**', async (route) => {
+    verificationRequests.push(route.request().url());
+    await route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null })
+    });
+  });
+
+  await page.goto('/?license=returned-license-token');
+  await expect(page).toHaveURL('http://127.0.0.1:4173/');
+  await expect(page.locator('#license-status')).toHaveText('✓ Supporter license active. Thank you.');
+  expect(await page.evaluate(() => localStorage.getItem('sb_license:workspace-reflow'))).toBe('returned-license-token');
+  expect(verificationRequests).toHaveLength(1);
+  expect(new URL(verificationRequests[0] ?? '').searchParams.get('license')).toBe('returned-license-token');
+});
+
+test('@claim:license-offline-status a cached valid license remains clearly identified when its refresh is offline', async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.setItem('sb_license:workspace-reflow', 'cached-license-token');
+    localStorage.setItem('sb_license_verdict:workspace-reflow', JSON.stringify({ valid: true, reason: 'ok', checkedAt: 0 }));
+  });
+  await page.route('https://api.sociobot.in/**', (route) => route.abort('internetdisconnected'));
+
+  await page.goto('/');
+  await expect(page.locator('#license-status')).toHaveText('Supporter status is available offline from the last check.');
+  await expect(page.getByRole('link', { name: 'Try it with sample data' })).toBeEnabled();
+  await expect(page.getByRole('link', { name: 'Download for Chrome' })).toBeEnabled();
 });
 
 test('@claim:offline-reload site reloads offline after the first controlled visit', async ({ browser }) => {
@@ -86,6 +139,7 @@ test('@claim:offline-reload site reloads offline after the first controlled visi
     await page.reload();
     await expect.poll(() => page.evaluate(() => Boolean(navigator.serviceWorker.controller))).toBe(true);
     await page.evaluate(async () => (await navigator.serviceWorker.getRegistration())?.update());
+    await expect.poll(() => page.evaluate(() => caches.keys())).toEqual(['workspace-reflow-site-v5']);
     await context.setOffline(true);
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Make one app pane easier to read');

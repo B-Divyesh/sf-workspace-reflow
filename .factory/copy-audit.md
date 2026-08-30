@@ -33,25 +33,25 @@ opening the sample is explicit.
 | Use J/K or arrow keys sentence by sentence. | 8 |
 | Save one rule for the site. | 7 |
 | The pane reopens on your next visit, while Escape returns focus to the page. | 14 |
-| Whole-page zoom makes every toolbar larger. | 7 |
-| Reader modes discard the app around your content. | 8 |
-| Reflow isolates only the region you choose, so navigation, status, and nearby task context remain where you left them. | 18 |
+| Workspace Reflow isolates only the region you choose. | 8 |
+| On desktop, navigation, status, and nearby task context remain visible beside it. | 11 |
+| Live region updates flow into the pane. | 7 |
+| Headings, lists, links, labels, and image text alternatives remain semantic. | 10 |
+| Use it only on page content you are allowed to access. | 11 |
 | Save the Chrome package, then unzip it into a folder you will keep. | 13 |
 | Visit chrome://extensions and switch on Developer mode. | 7 |
 | Choose “Load unpacked,” select the unzipped folder, then pin Workspace Reflow. | 12 |
-| Chrome Web Store distribution is planned. | 6 |
 | This downloadable package is the pilot release. | 7 |
 | Every reflow, preference, saved rule, and keyboard feature is free. | 10 |
 | Supporter purchases are temporarily unavailable while release setup is completed; nothing essential is withheld. | 14 |
 | If you already have a license token, you can still restore and verify it below. | 15 |
-| Sociobot/Dodo is the merchant of record for any future purchase. | 10 |
 | No purchase link is shown until checkout is enabled. | 9 |
 | It is an intermediate visual reading tool for people who need stronger reflow than browser zoom provides. | 17 |
 | It preserves useful semantics, but it does not replace assistive technology. | 11 |
 | No page content, selected text, rule, or preference. | 8 |
 | Only an optional supporter license token is sent to Sociobot when you ask to verify it. | 16 |
-| It works on normal HTTP and HTTPS pages. | 8 |
-| Browsers block extensions on internal pages and web stores. | 9 |
+| Use it on ordinary website pages you are allowed to access. | 11 |
+| Browser internal pages do not allow extensions. | 7 |
 | Sites that rebuild their markup may require you to select and save the region again. | 15 |
 
 ## Terminology
@@ -65,3 +65,18 @@ opening the sample is explicit.
 | Text-width setting | line width |
 | Sample environment | demo |
 | Optional purchase credential | license token |
+
+## Claim coverage
+
+Every retained product promise maps to `.factory/claims.json`. The key public
+groups are demo/account (`demo-sandbox`, `no-account`), local handling
+(`local-processing`, `first-party-site`), free and license behavior
+(`free-reading`, `license-restore`, `license-offline-status`,
+`license-daily-cache`), selection and reading (`pointer-selection`,
+`keyboard-selection`, `selection-cancel`, `sentence-navigation`,
+`reading-presets`), semantics and live content (`semantic-reflow`,
+`live-refresh`), context and viewport (`context-preserved`, `mobile-pane`),
+saved data (`saved-rule-reopen`, `data-deletion`), supported pages
+(`supported-pages`), package delivery (`package-download`), and offline use
+(`offline-reload`). Unprovable Chrome Web Store timing and broad
+OCR/paywall/DRM capability copy were removed.

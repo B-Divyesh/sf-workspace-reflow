@@ -7,25 +7,67 @@
     "sandbox": "fresh browser context; seed an unrelated localStorage value; use sample controls; assert the value is unchanged and no demo data is stored"
   },
   {
+    "id": "no-account",
+    "claim": "The sample and extension package are available without an account.",
+    "where": "landing first screen, README",
+    "test": "npm run test:e2e -- --grep @claim:no-account",
+    "sandbox": "fresh browser context with no cookies or credentials; open the sample and fetch the extension package successfully"
+  },
+  {
     "id": "local-processing",
-    "claim": "Selected page text stays on the device.",
-    "where": "landing facts, privacy page, README, popup",
+    "claim": "Selected page text is not transmitted or written into saved rules.",
+    "where": "landing facts and privacy answer, privacy page, README, popup",
     "test": "npm run test:e2e -- --grep @claim:local-processing",
-    "sandbox": "packaged MV3 extension on a local fixture; record every HTTP request and payload through selection, reflow, save, and reopen"
+    "sandbox": "packaged MV3 extension on a local fixture; record every HTTP request and payload; inspect the exact saved-rule fields after selection, reflow, save, and reopen"
+  },
+  {
+    "id": "free-reading",
+    "claim": "Every reading feature works without a license, and unavailable checkout is not linked.",
+    "where": "landing first screen and supporter section, privacy page, terms, README, popup",
+    "test": "npm run test:e2e -- --grep @claim:free-reading",
+    "sandbox": "fresh extension profile with no license; assert no checkout link and exercise selection, settings, navigation, save, and reopen"
+  },
+  {
+    "id": "pointer-selection",
+    "claim": "Alt+Shift+R starts selection and a pointer click opens the chosen region.",
+    "where": "landing workflow, README, extension popup",
+    "test": "npm run test:e2e -- --grep @claim:pointer-selection",
+    "sandbox": "packaged MV3 extension; assert the registered shortcut, invoke its selection message, click a region, and assert the reading pane opens"
+  },
+  {
+    "id": "keyboard-selection",
+    "claim": "A region can be previewed, selected, and opened with the keyboard.",
+    "where": "landing workflow, README",
+    "test": "npm run test:e2e -- --grep @claim:keyboard-selection",
+    "sandbox": "desktop and 390 px packaged-extension contexts; invoke selection, use Tab/Arrow and Enter/Space, and assert focus moves into the pane"
+  },
+  {
+    "id": "selection-cancel",
+    "claim": "Escape cancels region selection without opening the reading pane.",
+    "where": "README, extension selection help",
+    "test": "npm run test:e2e -- --grep @claim:selection-cancel",
+    "sandbox": "desktop and 390 px packaged-extension contexts; start selection, press Escape, and assert the selection help and pane are closed"
+  },
+  {
+    "id": "context-preserved",
+    "claim": "On desktop, the reading pane keeps nearby page controls visible.",
+    "where": "landing first screen and product explanation, README",
+    "test": "npm run test:e2e -- --grep @claim:context-preserved",
+    "sandbox": "desktop packaged extension; open the pane and assert a source-page control remains entirely visible beside it"
   },
   {
     "id": "escape-close",
     "claim": "Escape closes the reading pane and returns focus.",
-    "where": "landing proof strip, README",
+    "where": "landing proof strip and workflow, README",
     "test": "npm run test:e2e -- --grep @claim:escape-close",
     "sandbox": "packaged MV3 extension; focus a source-page link, open the pane, press Escape, and assert the pane closes and focus returns"
   },
   {
     "id": "semantic-reflow",
-    "claim": "The reading pane preserves useful headings and lists.",
+    "claim": "The reading pane preserves headings, lists, links, form labels, and image text alternatives.",
     "where": "landing product explanation, README",
     "test": "npm run test:e2e -- --grep @claim:semantic-reflow",
-    "sandbox": "packaged MV3 extension; select a fixture section and assert its heading level and three-item ordered list survive in the pane"
+    "sandbox": "packaged MV3 extension; select a fixture containing each named semantic and assert its role, level, association, target, or text alternative in the pane"
   },
   {
     "id": "live-refresh",
@@ -35,39 +77,74 @@
     "sandbox": "packaged MV3 extension; mutate the selected source after opening and assert the new sentence appears after the debounce"
   },
   {
-    "id": "keyboard-selection",
-    "claim": "A region can be selected and opened with the keyboard.",
-    "where": "landing workflow, README",
-    "test": "npm run test:e2e -- --grep @claim:keyboard-selection",
-    "sandbox": "desktop and 390 px packaged-extension contexts; invoke selection, use Tab and Enter, and assert focus moves into the pane"
+    "id": "sentence-navigation",
+    "claim": "J, K, Up, and Down move through sentences and announce the current position.",
+    "where": "landing workflow, README, extension pane",
+    "test": "npm run test:e2e -- --grep @claim:sentence-navigation",
+    "sandbox": "packaged MV3 extension; use all four keys, assert forward and backward positions, lower-bound behavior, and the live announcement"
   },
   {
     "id": "reading-presets",
     "claim": "The pane provides 20–28 px type and 42–70 character line presets in light and dark.",
-    "where": "landing proof strip, README",
+    "where": "landing proof strip and workflow, README",
     "test": "npm run test:e2e -- --grep @claim:reading-presets",
     "sandbox": "packaged MV3 extension; set both extremes and both themes, save, and inspect applied CSS and stored values"
   },
   {
     "id": "saved-rule-reopen",
     "claim": "A saved site rule reopens with its latest reading settings.",
-    "where": "landing workflow, README",
+    "where": "landing workflow, privacy page, README",
     "test": "npm run test:e2e -- --grep @claim:saved-rule-reopen",
     "sandbox": "packaged MV3 extension; save dark/28/70, change to light/20/42, reload, and assert the latest settings reopen"
+  },
+  {
+    "id": "data-deletion",
+    "claim": "A saved site rule can be removed from the extension popup.",
+    "where": "privacy page",
+    "test": "npm run test:e2e -- --grep @claim:data-deletion",
+    "sandbox": "packaged MV3 extension with one saved rule; remove it from the popup and assert extension storage contains no rules"
+  },
+  {
+    "id": "mobile-pane",
+    "claim": "The reading pane fills the 390 px viewport at narrow widths.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:mobile-pane",
+    "sandbox": "390 px packaged-extension context; open a region and assert the fixed pane starts at x=0 and is exactly 390 CSS px wide"
+  },
+  {
+    "id": "supported-pages",
+    "claim": "The extension runs on ordinary websites and does not run on browser-internal pages.",
+    "where": "landing page scope answer",
+    "test": "npm run test:e2e -- --grep @claim:supported-pages",
+    "sandbox": "fresh extension profile; assert the manifest is limited to HTTP(S), the content script loads on local HTTP, and a message to about:blank is rejected"
   },
   {
     "id": "package-download",
     "claim": "The Chrome download is a valid extension ZIP.",
     "where": "landing download actions, README",
     "test": "npm run test:e2e -- --grep @claim:package-download",
-    "sandbox": "fresh site context; fetch the linked artifact and assert an HTTP success with ZIP magic bytes"
+    "sandbox": "fresh site context; fetch the linked artifact and assert an HTTP success, exact non-redirected package URL, and ZIP magic bytes"
   },
   {
     "id": "first-party-site",
-    "claim": "Normal website use loads no analytics, remote scripts, or remote fonts.",
+    "claim": "Normal website use loads only first-party resources, sets no cookies, and stores only the chosen theme.",
     "where": "privacy page, README",
     "test": "npm run test:e2e -- --grep @claim:first-party-site",
-    "sandbox": "fresh browser context; record every normal home-page request and assert every HTTP origin is the product origin"
+    "sandbox": "fresh browser context; record all normal home-page requests, cookies, and localStorage after a theme change"
+  },
+  {
+    "id": "license-restore",
+    "claim": "A returned supporter license is stored locally, removed from the URL, and verified with Sociobot.",
+    "where": "landing supporter section, privacy page, terms",
+    "test": "npm run test:e2e -- --grep @claim:license-restore",
+    "sandbox": "fresh site context with a returned token and recorded license endpoint; assert local storage, URL stripping, one verification request, and active status"
+  },
+  {
+    "id": "license-offline-status",
+    "claim": "A previously valid supporter status remains identified when a refresh cannot reach the license service.",
+    "where": "website and extension license status",
+    "test": "npm run test:e2e -- --grep @claim:license-offline-status",
+    "sandbox": "seed a stale valid cached verdict, abort the license request, and assert the offline status while free actions remain available"
   },
   {
     "id": "offline-reload",
@@ -78,7 +155,7 @@
   },
   {
     "id": "license-daily-cache",
-    "claim": "A cached supporter-license verdict is reused for no more than one day.",
+    "claim": "A cached supporter-license verdict is reused for less than one day.",
     "where": "privacy page",
     "test": "npm run test:unit -- --testNamePattern @claim:license-daily-cache",
     "sandbox": "fixed timestamps immediately before and exactly at the 24-hour boundary"

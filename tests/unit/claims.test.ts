@@ -29,4 +29,16 @@ describe('product claims registry', () => {
       expect(joined.split(`@claim:${claim.id}`).length - 1, claim.id).toBe(1);
     }
   });
+
+  it('keeps every browser claim command self-building for a clean checkout', async () => {
+    const claims = JSON.parse(await readFile('.factory/claims.json', 'utf8')) as Claim[];
+    const manifest = JSON.parse(await readFile('package.json', 'utf8')) as { scripts: Record<string, string> };
+    const browserClaims = claims.filter((claim) => claim.test.startsWith('npm run test:e2e'));
+
+    expect(browserClaims.length).toBeGreaterThan(0);
+    expect(manifest.scripts['test:e2e']).toMatch(/^npm run build && playwright test$/);
+    for (const claim of browserClaims) {
+      expect(claim.test).toMatch(/^npm run test:e2e -- --grep @claim:[a-z0-9-]+$/);
+    }
+  });
 });
