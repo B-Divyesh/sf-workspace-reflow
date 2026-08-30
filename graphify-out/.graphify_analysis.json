@@ -25,6 +25,7 @@
       "lib_license_verdict_key",
       "lib_license_verify_url",
       "site_src_main",
+      "site_src_main_initialquery",
       "site_src_main_licenseinput",
       "site_src_main_query",
       "site_src_main_readverdict",
@@ -54,28 +55,37 @@
       "entrypoints_content_main_opensavedrule",
       "entrypoints_content_main_persistpreferences",
       "entrypoints_content_main_previewtarget",
+      "entrypoints_content_main_queuestoragewrite",
       "entrypoints_content_main_reconcilesavebutton",
+      "entrypoints_content_main_recoversavedrule",
       "entrypoints_content_main_removerule",
       "entrypoints_content_main_rendersource",
       "entrypoints_content_main_sanitizeclone",
       "entrypoints_content_main_saverule",
       "entrypoints_content_main_selectregion",
+      "entrypoints_content_main_stopsavedrulerecovery",
       "entrypoints_content_main_updatesavebutton",
       "entrypoints_content_main_updatesentence",
       "entrypoints_content_mustquery",
+      "entrypoints_content_preferencesequal",
       "entrypoints_content_preferredscrollbehavior"
     ],
     "2": [
       "axe_core_playwright",
+      "eslint",
+      "eslint_js",
       "jsdom",
       "package_devdependencies",
       "package_devdependencies_axe_core_playwright",
+      "package_devdependencies_eslint",
+      "package_devdependencies_eslint_js",
       "package_devdependencies_jsdom",
       "package_devdependencies_playwright_core",
       "package_devdependencies_playwright_test",
       "package_devdependencies_sharp",
       "package_devdependencies_types_chrome",
       "package_devdependencies_typescript",
+      "package_devdependencies_typescript_eslint",
       "package_devdependencies_vite",
       "package_devdependencies_vitest",
       "package_devdependencies_wxt",
@@ -84,6 +94,7 @@
       "sharp",
       "types_chrome",
       "typescript",
+      "typescript_eslint",
       "vite",
       "vitest",
       "wxt"
@@ -124,6 +135,7 @@
       "package_scripts_prepare_assets",
       "package_scripts_preview_site",
       "package_scripts_test",
+      "package_scripts_test_claims",
       "package_scripts_test_e2e",
       "package_scripts_test_package",
       "package_scripts_test_unit",
@@ -172,62 +184,79 @@
       "package_version"
     ],
     "8": [
+      "site_src_demo",
+      "site_src_demo_mustelement",
+      "site_src_demo_pane",
+      "site_src_demo_position",
+      "site_src_demo_selectsetting",
+      "site_src_demo_sentences",
+      "site_src_demo_themebutton",
+      "site_src_demo_updatesentence"
+    ],
+    "9": [
       "scripts_copy_package",
       "scripts_copy_package_archive",
       "scripts_copy_package_unpacked"
     ],
-    "9": [
+    "10": [
       "scripts_verify_package",
       "scripts_verify_package_execfileasync"
     ],
-    "10": [
+    "11": [
       "site_public_sw",
       "site_public_sw_shell"
     ],
-    "11": [
+    "12": [
       "site_vite_config",
       "site_vite_config_siteroot"
     ],
-    "12": [
+    "13": [
       "tests_e2e_site_spec",
       "tests_e2e_site_spec_pages"
     ],
-    "13": [
-      "entrypoints_background"
-    ],
     "14": [
-      "playwright_config"
+      "tests_unit_claims_test",
+      "tests_unit_claims_test_claim"
     ],
     "15": [
-      "scripts_clean"
+      "entrypoints_background"
     ],
     "16": [
-      "scripts_prepare_assets"
+      "eslint_config"
     ],
     "17": [
-      "tests_e2e_extension_spec"
+      "playwright_config"
     ],
     "18": [
-      "tests_unit_static_deployment_test"
+      "scripts_clean"
     ],
     "19": [
-      "vitest_config"
+      "scripts_prepare_assets"
     ],
     "20": [
+      "tests_e2e_extension_spec"
+    ],
+    "21": [
+      "tests_unit_static_deployment_test"
+    ],
+    "22": [
+      "vitest_config"
+    ],
+    "23": [
       "wxt_config"
     ]
   },
   "cohesion": {
-    "0": 0.08901515151515152,
-    "1": 0.17724867724867724,
-    "2": 0.09523809523809523,
+    "0": 0.0855614973262032,
+    "1": 0.16532258064516128,
+    "2": 0.07407407407407407,
     "3": 0.1736842105263158,
-    "4": 0.11764705882352941,
+    "4": 0.1111111111111111,
     "5": 0.125,
     "6": 0.16666666666666666,
     "7": 0.25,
-    "8": 0.6666666666666666,
-    "9": 1.0,
+    "8": 0.25,
+    "9": 0.6666666666666666,
     "10": 1.0,
     "11": 1.0,
     "12": 1.0,
@@ -238,23 +267,26 @@
     "17": 1.0,
     "18": 1.0,
     "19": 1.0,
-    "20": 1.0
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0
   },
   "gods": [
     {
       "id": "entrypoints_content_main",
       "label": "main()",
-      "degree": 28
+      "degree": 31
     },
     {
       "id": "package_scripts",
       "label": "scripts",
-      "degree": 17
+      "degree": 18
     },
     {
       "id": "entrypoints_content_main_openpane",
       "label": "openPane()",
-      "degree": 10
+      "degree": 11
     },
     {
       "id": "tsconfig_compileroptions",
@@ -264,7 +296,7 @@
     {
       "id": "entrypoints_content_main_announce",
       "label": "announce()",
-      "degree": 9
+      "degree": 10
     },
     {
       "id": "tsconfig_include",
@@ -274,16 +306,16 @@
     {
       "id": "entrypoints_content_main_beginselection",
       "label": "beginSelection()",
-      "degree": 7
-    },
-    {
-      "id": "entrypoints_content_main_cancelselection",
-      "label": "cancelSelection()",
-      "degree": 6
+      "degree": 8
     },
     {
       "id": "entrypoints_content_main_rendersource",
       "label": "renderSource()",
+      "degree": 6
+    },
+    {
+      "id": "entrypoints_content_main_cancelselection",
+      "label": "cancelSelection()",
       "degree": 6
     },
     {
@@ -303,6 +335,17 @@
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "connects across different repos/directories; peripheral node `updateLicenseStatus()` unexpectedly reaches hub `requestLicenseVerdict()`"
+    },
+    {
+      "source": "selectRegion()",
+      "target": "createStableSelector()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/selector.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
     },
     {
       "source": "describeKeyboardCandidate()",
@@ -332,17 +375,6 @@
       "source_files": [
         "entrypoints/content.ts",
         "lib/sentences.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "connects across different repos/directories; bridges separate communities"
-    },
-    {
-      "source": "selectRegion()",
-      "target": "createStableSelector()",
-      "source_files": [
-        "entrypoints/content.ts",
-        "lib/selector.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
