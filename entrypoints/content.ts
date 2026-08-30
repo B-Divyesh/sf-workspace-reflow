@@ -35,6 +35,8 @@ export default defineContentScript({
     let keyboardCandidates: HTMLElement[] = [];
     let keyboardCandidateIndex = -1;
     let refreshTimer = 0;
+    let pendingRuleObserver: MutationObserver | null = null;
+    let storageWriteQueue: Promise<void> = Promise.resolve();
 
     const host = document.createElement('div');
     host.id = HOST_ID;
@@ -94,8 +96,32 @@ export default defineContentScript({
       themeButton.textContent = state.preferences.theme === 'light' ? 'Use dark pane' : 'Use light pane';
     }
 
-    async function persistPreferences() {
-      await browser.storage.local.set({ [PREFERENCES_KEY]: state.preferences });
+    function queueStorageWrite(write: () => Promise<void>): Promise<void> {
+      storageWriteQueue = storageWriteQueue.then(write).catch(() => {
+        announce('Workspace Reflow could not save that change. Try again.');
+      });
+      return storageWriteQueue;
+    }
+
+    function persistPreferences() {
+      const preferences = { ...state.preferences };
+      const selector = state.selector;
+      return queueStorageWrite(async () => {
+        const stored = await browser.storage.local.get(RULES_KEY);
+        const rules = (stored[RULES_KEY] as SiteRule[] | undefined) ?? [];
+        let savedRuleUpdated = false;
+        const updatedRules = rules.map((rule) => {
+          if (rule.origin !== location.origin || rule.selector !== selector) return rule;
+          savedRuleUpdated = true;
+          return { ...rule, preferences, updatedAt: new Date().toISOString() };
+        });
+        const values: Record<string, unknown> = { [PREFERENCES_KEY]: preferences };
+        if (savedRuleUpdated) values[RULES_KEY] = updatedRules;
+        await browser.storage.local.set(values);
+        if (savedRuleUpdated && state.selector === selector && preferencesEqual(state.preferences, preferences)) {
+          updateSaveButton(true);
+        }
+      });
     }
 
     function sanitizeClone(source: Element): HTMLElement {
@@ -273,6 +299,7 @@ export default defineContentScript({
         return;
       }
       if (host.dataset.open) closePane();
+      stopSavedRuleRecovery();
       selectionActive = true;
       previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       keyboardCandidates = findKeyboardCandidates();
@@ -298,20 +325,25 @@ export default defineContentScript({
       keyboardCandidateIndex = -1;
     }
 
-    async function saveRule() {
+    function saveRule() {
       if (!state.source || !state.selector) return;
-      const stored = await browser.storage.local.get(RULES_KEY);
-      const rules = ((stored[RULES_KEY] as SiteRule[] | undefined) ?? []).filter((rule) => rule.origin !== location.origin);
-      rules.push({
-        origin: location.origin,
-        selector: state.selector,
-        label: state.label,
-        preferences: state.preferences,
-        updatedAt: new Date().toISOString()
+      const selector = state.selector;
+      const label = state.label;
+      const preferences = { ...state.preferences };
+      return queueStorageWrite(async () => {
+        const stored = await browser.storage.local.get(RULES_KEY);
+        const rules = ((stored[RULES_KEY] as SiteRule[] | undefined) ?? []).filter((rule) => rule.origin !== location.origin);
+        rules.push({
+          origin: location.origin,
+          selector,
+          label,
+          preferences,
+          updatedAt: new Date().toISOString()
+        });
+        await browser.storage.local.set({ [RULES_KEY]: rules });
+        if (state.selector === selector) updateSaveButton(preferencesEqual(state.preferences, preferences));
+        announce(`Saved ${label} for this site.`);
       });
-      await browser.storage.local.set({ [RULES_KEY]: rules });
-      updateSaveButton(true);
-      announce(`Saved ${state.label} for this site.`);
     }
 
     function updateSaveButton(saved: boolean) {
@@ -322,19 +354,43 @@ export default defineContentScript({
 
     async function reconcileSaveButton(selector: string) {
       const rule = await findRule();
-      if (state.selector === selector) updateSaveButton(rule?.selector === selector);
+      if (state.selector === selector) {
+        updateSaveButton(rule?.selector === selector && preferencesEqual(rule.preferences, state.preferences));
+      }
     }
 
     async function removeRule() {
-      const stored = await browser.storage.local.get(RULES_KEY);
-      const rules = ((stored[RULES_KEY] as SiteRule[] | undefined) ?? []).filter((rule) => rule.origin !== location.origin);
-      await browser.storage.local.set({ [RULES_KEY]: rules });
+      stopSavedRuleRecovery();
+      await queueStorageWrite(async () => {
+        const stored = await browser.storage.local.get(RULES_KEY);
+        const rules = ((stored[RULES_KEY] as SiteRule[] | undefined) ?? []).filter((rule) => rule.origin !== location.origin);
+        await browser.storage.local.set({ [RULES_KEY]: rules });
+      });
       closePane();
     }
 
     async function findRule(): Promise<SiteRule | null> {
+      await storageWriteQueue;
       const stored = await browser.storage.local.get(RULES_KEY);
       return ((stored[RULES_KEY] as SiteRule[] | undefined) ?? []).find((rule) => rule.origin === location.origin) ?? null;
+    }
+
+    function stopSavedRuleRecovery() {
+      pendingRuleObserver?.disconnect();
+      pendingRuleObserver = null;
+    }
+
+    function recoverSavedRule(rule: SiteRule) {
+      const openWhenAvailable = () => {
+        const source = document.querySelector(rule.selector);
+        if (!source) return false;
+        stopSavedRuleRecovery();
+        void openPane(source, rule.selector, rule.preferences, false);
+        return true;
+      };
+      if (openWhenAvailable()) return;
+      pendingRuleObserver = new MutationObserver(openWhenAvailable);
+      pendingRuleObserver.observe(document.documentElement, { childList: true, subtree: true });
     }
 
     async function openSavedRule(announceFailure = true) {
@@ -419,15 +475,7 @@ export default defineContentScript({
     });
 
     void findRule().then((rule) => {
-      if (!rule) return;
-      let attempts = 0;
-      const tryOpen = () => {
-        attempts += 1;
-        const source = document.querySelector(rule.selector);
-        if (source) void openPane(source, rule.selector, rule.preferences, false);
-        else if (attempts < 8) window.setTimeout(tryOpen, 750);
-      };
-      tryOpen();
+      if (rule) recoverSavedRule(rule);
     });
   }
 });
@@ -440,6 +488,10 @@ function mustQuery<T extends Element>(root: ParentNode, selector: string): T {
 
 function preferredScrollBehavior(): ScrollBehavior {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+}
+
+function preferencesEqual(left: ReflowPreferences, right: ReflowPreferences): boolean {
+  return left.fontSize === right.fontSize && left.measure === right.measure && left.theme === right.theme;
 }
 
 /**

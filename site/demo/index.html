@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Try Workspace Reflow on a sample project update without installing or saving anything." />
+    <meta name="theme-color" content="#fff8e8" />
+    <title>Demo — Workspace Reflow</title>
+    <link rel="canonical" href="https://workspace-reflow.sociobot.in/demo/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Demo — Workspace Reflow" />
+    <meta property="og:description" content="Try the reading pane on a sample project update without saving anything." />
+    <meta property="og:url" content="https://workspace-reflow.sociobot.in/demo/" />
+    <meta property="og:image" content="https://workspace-reflow.sociobot.in/social-preview.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link rel="stylesheet" href="/src/demo.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to main content</a>
+    <header class="site-header">
+      <a class="brand" href="/" aria-label="Workspace Reflow home"><img src="/mark.svg" width="40" height="40" alt="" /><span>Workspace<br />Reflow</span></a>
+      <nav aria-label="Primary navigation"><a href="/">Home</a><a href="/#install">Install</a></nav>
+    </header>
+    <aside class="demo-banner" aria-label="Demo status">
+      <strong>Demo — sample data, nothing is saved</strong>
+      <span><button type="button" id="reset-demo">Reset demo</button><a href="/#install">Start for real</a></span>
+    </aside>
+    <main id="main" class="demo-main">
+      <div class="demo-intro">
+        <p class="eyebrow">Interactive sample</p>
+        <h1>Read a sample pane with Workspace Reflow</h1>
+        <p class="lede">Adjust the selected project update, then use Next sentence or the J key to move through it.</p>
+      </div>
+      <section class="demo-workspace" aria-label="Sample project workspace">
+        <div class="sample-app">
+          <div class="sample-app-header"><strong>Project Atlas</strong><span>Release workspace</span></div>
+          <nav aria-label="Sample project sections"><span>Overview</span><span class="sample-active">Release</span><span>Risks</span></nav>
+          <div class="sample-board">
+            <h2>Release readiness</h2>
+            <ul><li><strong>Keyboard review</strong><span>Complete</span></li><li><strong>Mobile checks</strong><span>Complete</span></li><li><strong>Copy review</strong><span>In progress</span></li></ul>
+            <article class="sample-source" aria-label="Selected sample region">
+              <h3>Friday project update</h3>
+              <p>The team completed keyboard checks on the new release form.</p>
+              <p>The mobile layout now keeps every action visible at narrow widths.</p>
+              <p>One copy review remains before the release can move to production.</p>
+              <p>The next review starts Monday at nine in the morning.</p>
+            </article>
+          </div>
+        </div>
+        <aside class="demo-pane" data-theme="light" aria-label="Sample reflow reading pane">
+          <div class="demo-pane-header"><div><span>Live reflow</span><h2>Friday project update</h2></div><a href="/">Close demo</a></div>
+          <div class="demo-tools" aria-label="Sample reading settings">
+            <fieldset><legend>Text size</legend><button type="button" data-demo-font="20">A</button><button type="button" data-demo-font="24" aria-pressed="true">A+</button><button type="button" data-demo-font="28">A++</button></fieldset>
+            <fieldset><legend>Line width</legend><button type="button" data-demo-measure="42">Narrow</button><button type="button" data-demo-measure="56" aria-pressed="true">Medium</button><button type="button" data-demo-measure="70">Wide</button></fieldset>
+            <button type="button" id="demo-theme">Use dark pane</button>
+          </div>
+          <article class="demo-reading" tabindex="0" aria-label="Reflowed sample content">
+            <h3>Friday project update</h3>
+            <p data-demo-sentence>The team completed keyboard checks on the new release form.</p>
+            <p data-demo-sentence>The mobile layout now keeps every action visible at narrow widths.</p>
+            <p data-demo-sentence>One copy review remains before the release can move to production.</p>
+            <p data-demo-sentence>The next review starts Monday at nine in the morning.</p>
+          </article>
+          <div class="demo-navigation"><button type="button" id="previous-sentence">Previous sentence</button><p id="demo-position" role="status" aria-live="polite">Press Next sentence or J to begin</p><button type="button" id="next-sentence">Next sentence</button></div>
+        </aside>
+      </section>
+    </main>
+    <footer class="site-footer"><p>Workspace Reflow · v1.0.0</p><nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a></nav><p class="generated-note">This demo uses fictional sample project data and does not write to browser storage.</p></footer>
+    <script type="module" src="/src/demo.ts"></script>
+  </body>
+</html>

@@ -17,24 +17,28 @@
     "prepare:assets": "node scripts/prepare-assets.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "test:claims": "vitest run --testNamePattern '@claim:' && playwright test --grep '@claim:'",
     "test:package": "node scripts/verify-package.mjs",
     "typecheck": "tsc --noEmit",
-    "lint": "npm run typecheck",
+    "lint": "eslint . --max-warnings=0",
     "test": "npm run lint && npm run test:unit && npm run build && npm run test:package && npm run test:e2e"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.58.2",
     "@types/chrome": "0.0.287",
+    "eslint": "10.9.1",
     "jsdom": "25.0.1",
     "playwright-core": "1.58.2",
     "sharp": "0.35.4",
     "typescript": "5.7.3",
+    "typescript-eslint": "8.68.0",
     "vite": "8.2.2",
     "vitest": "4.1.11",
     "wxt": "0.21.4"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20.19"
   }
 }

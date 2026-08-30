@@ -1,5 +1,10 @@
 import { cachedVerdictIsFresh, LICENSE_KEY, requestLicenseVerdict, VERDICT_KEY, type LicenseVerdict } from '../../lib/license';
 
+const initialQuery = new URLSearchParams(location.search);
+if (location.pathname === '/' && initialQuery.get('demo') === '1' && !initialQuery.has('license')) {
+  location.replace('/demo/');
+}
+
 const root = document.documentElement;
 const themeButton = document.querySelector<HTMLButtonElement>('.theme-toggle');
 const storedTheme = localStorage.getItem('workspaceReflow.theme');
@@ -55,6 +60,7 @@ if (returnedLicense) {
 }
 
 const licenseInput = document.querySelector<HTMLInputElement>('#license');
+licenseInput?.addEventListener('input', () => licenseInput.removeAttribute('aria-invalid'));
 const storedLicense = returnedLicense ?? localStorage.getItem(LICENSE_KEY);
 if (licenseInput && storedLicense) licenseInput.value = storedLicense;
 if (storedLicense) void verifyLicense(storedLicense);
@@ -65,9 +71,11 @@ document.querySelector<HTMLFormElement>('#license-form')?.addEventListener('subm
   const status = document.querySelector<HTMLElement>('#license-status');
   if (!token) {
     if (status) status.textContent = 'Paste the license token from your receipt.';
+    licenseInput?.setAttribute('aria-invalid', 'true');
     licenseInput?.focus();
     return;
   }
+  licenseInput?.removeAttribute('aria-invalid');
   localStorage.setItem(LICENSE_KEY, token);
   if (status) status.textContent = 'Checking license…';
   void verifyLicense(token, true);

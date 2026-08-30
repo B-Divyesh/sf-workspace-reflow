@@ -1,0 +1,86 @@
+[
+  {
+    "id": "demo-sandbox",
+    "claim": "The sample opens in one click and does not save data.",
+    "where": "landing first screen, demo banner, README",
+    "test": "npm run test:e2e -- --grep @claim:demo-sandbox",
+    "sandbox": "fresh browser context; seed an unrelated localStorage value; use sample controls; assert the value is unchanged and no demo data is stored"
+  },
+  {
+    "id": "local-processing",
+    "claim": "Selected page text stays on the device.",
+    "where": "landing facts, privacy page, README, popup",
+    "test": "npm run test:e2e -- --grep @claim:local-processing",
+    "sandbox": "packaged MV3 extension on a local fixture; record every HTTP request and payload through selection, reflow, save, and reopen"
+  },
+  {
+    "id": "escape-close",
+    "claim": "Escape closes the reading pane and returns focus.",
+    "where": "landing proof strip, README",
+    "test": "npm run test:e2e -- --grep @claim:escape-close",
+    "sandbox": "packaged MV3 extension; focus a source-page link, open the pane, press Escape, and assert the pane closes and focus returns"
+  },
+  {
+    "id": "semantic-reflow",
+    "claim": "The reading pane preserves useful headings and lists.",
+    "where": "landing product explanation, README",
+    "test": "npm run test:e2e -- --grep @claim:semantic-reflow",
+    "sandbox": "packaged MV3 extension; select a fixture section and assert its heading level and three-item ordered list survive in the pane"
+  },
+  {
+    "id": "live-refresh",
+    "claim": "Live region updates flow into the reading pane.",
+    "where": "landing checklist, README",
+    "test": "npm run test:e2e -- --grep @claim:live-refresh",
+    "sandbox": "packaged MV3 extension; mutate the selected source after opening and assert the new sentence appears after the debounce"
+  },
+  {
+    "id": "keyboard-selection",
+    "claim": "A region can be selected and opened with the keyboard.",
+    "where": "landing workflow, README",
+    "test": "npm run test:e2e -- --grep @claim:keyboard-selection",
+    "sandbox": "desktop and 390 px packaged-extension contexts; invoke selection, use Tab and Enter, and assert focus moves into the pane"
+  },
+  {
+    "id": "reading-presets",
+    "claim": "The pane provides 20–28 px type and 42–70 character line presets in light and dark.",
+    "where": "landing proof strip, README",
+    "test": "npm run test:e2e -- --grep @claim:reading-presets",
+    "sandbox": "packaged MV3 extension; set both extremes and both themes, save, and inspect applied CSS and stored values"
+  },
+  {
+    "id": "saved-rule-reopen",
+    "claim": "A saved site rule reopens with its latest reading settings.",
+    "where": "landing workflow, README",
+    "test": "npm run test:e2e -- --grep @claim:saved-rule-reopen",
+    "sandbox": "packaged MV3 extension; save dark/28/70, change to light/20/42, reload, and assert the latest settings reopen"
+  },
+  {
+    "id": "package-download",
+    "claim": "The Chrome download is a valid extension ZIP.",
+    "where": "landing download actions, README",
+    "test": "npm run test:e2e -- --grep @claim:package-download",
+    "sandbox": "fresh site context; fetch the linked artifact and assert an HTTP success with ZIP magic bytes"
+  },
+  {
+    "id": "first-party-site",
+    "claim": "Normal website use loads no analytics, remote scripts, or remote fonts.",
+    "where": "privacy page, README",
+    "test": "npm run test:e2e -- --grep @claim:first-party-site",
+    "sandbox": "fresh browser context; record every normal home-page request and assert every HTTP origin is the product origin"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "The product page reloads offline after the first controlled visit.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:offline-reload",
+    "sandbox": "dedicated browser context; wait for service-worker control, update, go offline, reload, and assert the home heading renders"
+  },
+  {
+    "id": "license-daily-cache",
+    "claim": "A cached supporter-license verdict is reused for no more than one day.",
+    "where": "privacy page",
+    "test": "npm run test:unit -- --testNamePattern @claim:license-daily-cache",
+    "sandbox": "fixed timestamps immediately before and exactly at the 24-hour boundary"
+  }
+]

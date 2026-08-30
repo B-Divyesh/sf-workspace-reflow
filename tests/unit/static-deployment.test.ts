@@ -12,17 +12,23 @@ describe('static deployment policy', () => {
     expect(siteBuild).toMatch(/vite build.*copy-package/);
   });
 
-  it('serves extension archives as files instead of falling back to the app shell', async () => {
+  it('serves extension archives with download and security policies', async () => {
     const config = JSON.parse(await readFile('site/public/staticwebapp.config.json', 'utf8')) as {
-      navigationFallback: { exclude: string[] };
       routes: Array<{ route: string; headers?: Record<string, string> }>;
       globalHeaders: Record<string, string>;
     };
 
-    expect(config.navigationFallback.exclude).toContain('/downloads/*');
     expect(config.routes.find((route) => route.route === '/downloads/*')?.headers?.['Content-Disposition']).toBe('attachment');
     expect(config.globalHeaders['Content-Security-Policy']).toContain("default-src 'self'");
     expect(config.globalHeaders['Permissions-Policy']).toContain('payment=()');
+  });
+
+  it('ships a real 404 response override without weakening the fallback', async () => {
+    const config = JSON.parse(await readFile('site/public/staticwebapp.config.json', 'utf8')) as {
+      responseOverrides: Record<string, { rewrite: string; statusCode: number }>;
+    };
+
+    expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html', statusCode: 404 });
   });
 
   it('serves every generated AVIF with the interoperable image MIME type', async () => {

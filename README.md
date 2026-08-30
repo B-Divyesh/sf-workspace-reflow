@@ -8,6 +8,9 @@ context around it.
 
 Live product page: <https://workspace-reflow.sociobot.in>
 
+One-click sample: <https://workspace-reflow.sociobot.in/demo/>. It opens a
+fictional release workspace, stores nothing, and needs no extension install.
+
 ## What v1 includes
 
 - Pointer selection plus a keyboard region cursor: Tab/arrows preview, Enter or
@@ -25,13 +28,15 @@ Live product page: <https://workspace-reflow.sociobot.in>
 
 ## Local development
 
-Requirements: Node.js 20+ and npm.
+Requirements: Node.js 20.19+ and npm.
 
 ```sh
-npm install
+npm ci
 npm run dev          # WXT extension development mode
 npm run dev:site     # product site on a local Vite server
 npm run typecheck
+npm run lint
+npm run test:claims
 npm test
 ```
 
@@ -67,7 +72,8 @@ The prompt, source image, and model provenance are in `assets/src/` and
 package-consumer archive validation, axe-assisted desktop and
 390 px site checks, and actual Chromium extension workflows covering pointer and
 keyboard-only region selection, 44 px targets, reflow, sentence navigation,
-save, automatic reopen, Escape, and focus return.
+save, late-SPA recovery, automatic reopen, Escape, focus return, offline reload,
+the isolated sample route, and every entry in `.factory/claims.json`.
 
 The extension uses `browser.storage.local` for rules, preferences, and an
 optional license. Page content never leaves the device. The product website has

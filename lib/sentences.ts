@@ -5,7 +5,7 @@ export function segmentSentences(text: string): string[] {
     const segmenter = new Intl.Segmenter(undefined, { granularity: 'sentence' });
     return Array.from(segmenter.segment(normalized), (item) => item.segment);
   }
-  return normalized.match(/[^.!?]+(?:[.!?]+[”'\"]?|$)\s*/g) ?? [normalized];
+  return normalized.match(/[^.!?]+(?:[.!?]+[”'"]?|$)\s*/g) ?? [normalized];
 }
 
 export function wrapSentences(root: HTMLElement): HTMLElement[] {

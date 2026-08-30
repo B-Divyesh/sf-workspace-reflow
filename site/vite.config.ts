@@ -15,6 +15,8 @@ export default defineConfig({
     rollupOptions: {
       input: {
         home: resolve(siteRoot, 'index.html'),
+        demo: resolve(siteRoot, 'demo/index.html'),
+        notFound: resolve(siteRoot, '404.html'),
         privacy: resolve(siteRoot, 'privacy/index.html'),
         terms: resolve(siteRoot, 'terms/index.html')
       },

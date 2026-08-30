@@ -99,3 +99,7 @@ Generated with the factory image deployment (`factory-image`) through
 product. The selected source and exact prompt are stored in `assets/src/`.
 Production derivatives are responsive AVIF and WebP files with a JPEG fallback;
 each shipped hero variant remains below the 300 KB mobile-image budget.
+
+The 1200×630 social preview is a center crop of the same original hero source.
+The 180 px touch icon is rasterized from the hand-authored product mark. Both
+were produced locally with Sharp on 2026-08-30; no new external source was used.

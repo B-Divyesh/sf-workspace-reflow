@@ -3,10 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Workspace Reflow pins one selected web-app region into a large, keyboard-first reading pane while the rest of your workspace stays visible." />
+    <meta name="description" content="Enlarge one web-app region in a keyboard-first reading pane while nearby controls and task context stay visible." />
     <meta name="theme-color" content="#fff8e8" />
-    <title>Workspace Reflow — Read one pane without losing the page</title>
+    <title>Workspace Reflow — Enlarge one app region</title>
+    <link rel="canonical" href="https://workspace-reflow.sociobot.in/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Workspace Reflow — Enlarge one app region" />
+    <meta property="og:description" content="Enlarge one web-app region while nearby controls and task context stay visible." />
+    <meta property="og:url" content="https://workspace-reflow.sociobot.in/" />
+    <meta property="og:image" content="https://workspace-reflow.sociobot.in/social-preview.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Workspace Reflow — Enlarge one app region" />
+    <meta name="twitter:description" content="Enlarge one web-app region while nearby controls and task context stay visible." />
+    <meta name="twitter:image" content="https://workspace-reflow.sociobot.in/social-preview.jpg" />
     <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
@@ -18,8 +31,8 @@
         <span>Workspace<br />Reflow</span>
       </a>
       <nav aria-label="Primary navigation">
+        <a href="/demo/">Demo</a>
         <a href="#how">How it works</a>
-        <a href="#support">Supporter</a>
         <button class="theme-toggle" type="button" aria-pressed="false">Dark</button>
       </nav>
     </header>
@@ -27,14 +40,19 @@
     <main id="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span aria-hidden="true">01 /</span> Contextual reading tool</p>
-          <h1 id="hero-title">Make one pane readable. Keep the rest in sight.</h1>
-          <p class="lede">Select a dense list, thread, or document. Workspace Reflow pins it into a large, high-contrast reading pane without flattening the rest of your workspace.</p>
+          <p class="eyebrow">Browser extension for low-vision work</p>
+          <h1 id="hero-title">Make one app pane easier to read</h1>
+          <p class="lede">For low-vision workers, it enlarges one region while nearby controls and task context stay visible.</p>
           <div class="hero-actions">
-            <a class="button primary" href="/downloads/workspace-reflow-chrome.zip" download>Download for Chrome</a>
-            <a class="text-link" href="#install">Installation steps <span aria-hidden="true">↓</span></a>
+            <a class="button primary" href="/demo/">Try it with sample data</a>
+            <a class="button secondary" href="/downloads/workspace-reflow-chrome.zip" download>Download for Chrome</a>
           </div>
-          <p class="microcopy">Free core tool · On-device processing · No account</p>
+          <p class="microcopy">The sample opens with a selected project update ready to read.</p>
+          <ul class="hero-facts" aria-label="Product facts">
+            <li>All reading features are free.</li>
+            <li>Page text stays on your device.</li>
+            <li>No account is required.</li>
+          </ul>
         </div>
         <figure class="hero-art">
           <picture>
@@ -56,8 +74,8 @@
 
       <section class="how section" id="how" aria-labelledby="how-title">
         <div class="section-heading">
-          <p class="eyebrow">The three-move workflow</p>
-          <h2 id="how-title">Zoom the task, not the whole browser.</h2>
+          <p class="eyebrow">Three steps</p>
+          <h2 id="how-title">How Workspace Reflow works</h2>
         </div>
         <ol class="steps">
           <li><span class="step-number">01</span><h3>Select</h3><p>Press <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>R</kbd>, move over the live region you need, and click.</p></li>
@@ -76,8 +94,8 @@
           <div class="fake-reflow"><b></b><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="context-copy">
-          <p class="eyebrow">Not another reader mode</p>
-          <h2 id="context-title">Your workspace stays a workspace.</h2>
+          <p class="eyebrow">What stays visible</p>
+          <h2 id="context-title">Keep nearby controls and task context visible</h2>
           <p>Whole-page zoom makes every toolbar larger. Reader modes discard the app around your content. Reflow isolates only the region you choose, so navigation, status, and nearby task context remain where you left them.</p>
           <ul class="check-list">
             <li>Live region updates flow into the pane</li>
@@ -89,8 +107,8 @@
 
       <section class="install section" id="install" aria-labelledby="install-title">
         <div class="section-heading">
-          <p class="eyebrow">Install the v1 package</p>
-          <h2 id="install-title">Up and reading in two minutes.</h2>
+          <p class="eyebrow">Manual pilot install</p>
+          <h2 id="install-title">Install the Chrome extension</h2>
         </div>
         <ol class="install-list">
           <li><strong>Download and unzip</strong><span>Save the Chrome package, then unzip it into a folder you will keep.</span></li>
@@ -98,13 +116,13 @@
           <li><strong>Load the folder</strong><span>Choose “Load unpacked,” select the unzipped folder, then pin Workspace Reflow.</span></li>
         </ol>
         <a class="button secondary" href="/downloads/workspace-reflow-chrome.zip" download>Download the extension</a>
-        <p class="install-note">Chrome Web Store distribution is planned. This signed-source package is the pilot release.</p>
+        <p class="install-note">Chrome Web Store distribution is planned. This downloadable package is the pilot release.</p>
       </section>
 
       <section class="support section" id="support" aria-labelledby="support-title">
         <div>
           <p class="eyebrow">Optional supporter edition</p>
-          <h2 id="support-title">Accessibility stays free. Maintenance gets a backer.</h2>
+          <h2 id="support-title">Reading features are free</h2>
           <p>Every reflow, preference, saved rule, and keyboard feature is free. Supporter purchases are temporarily unavailable while release setup is completed; nothing essential is withheld.</p>
           <p class="merchant">If you already have a license token, you can still restore and verify it below. Sociobot/Dodo is the merchant of record for any future purchase.</p>
         </div>
@@ -116,7 +134,7 @@
             <summary>Already bought it?</summary>
             <form id="license-form">
               <label for="license">Paste your license</label>
-              <div><input id="license" name="license" autocomplete="off" spellcheck="false" /><button type="submit">Verify license</button></div>
+              <div><input id="license" name="license" autocomplete="off" spellcheck="false" aria-describedby="license-status" /><button type="submit" aria-label="Verify license">Verify license</button></div>
               <p id="license-status" role="status" aria-live="polite">The token is stored only in this browser.</p>
             </form>
           </details>
@@ -124,7 +142,7 @@
       </section>
 
       <section class="faq section" aria-labelledby="faq-title">
-        <div class="section-heading"><p class="eyebrow">Straight answers</p><h2 id="faq-title">Before you install</h2></div>
+        <div class="section-heading"><p class="eyebrow">Product limits and privacy</p><h2 id="faq-title">Questions before you install</h2></div>
         <details><summary>Is this a screen-reader replacement?</summary><p>No. It is an intermediate visual reading tool for people who need stronger reflow than browser zoom provides. It preserves useful semantics, but it does not replace assistive technology.</p></details>
         <details><summary>What leaves my device?</summary><p>No page content, selected text, rule, or preference. Only an optional supporter license token is sent to Sociobot when you ask to verify it.</p></details>
         <details><summary>Will it work on every page?</summary><p>It works on normal HTTP and HTTPS pages. Browsers block extensions on internal pages and web stores. Sites that rebuild their markup may require you to select and save the region again.</p></details>
@@ -133,7 +151,7 @@
 
     <footer class="site-footer">
       <div class="brand"><img src="/mark.svg" width="40" height="40" alt="" /><span>Workspace<br />Reflow</span></div>
-      <p>Contextual reading for dense workspaces.<br />Built by the Param Factory.</p>
+      <p>Contextual reading for dense workspaces.<br />Built by the Param Factory · v1.0.0.</p>
       <nav aria-label="Legal"><a href="/privacy/">Privacy</a><a href="/terms/">Terms</a><a href="https://github.com/B-Divyesh/sf-workspace-reflow">Source</a></nav>
       <p class="generated-note">Hero artwork was generated for this product with the factory image model.</p>
     </footer>
