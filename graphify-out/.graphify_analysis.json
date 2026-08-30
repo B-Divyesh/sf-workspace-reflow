@@ -252,23 +252,23 @@
       "degree": 17
     },
     {
-      "id": "tsconfig_compileroptions",
-      "label": "compilerOptions",
-      "degree": 10
-    },
-    {
       "id": "entrypoints_content_main_openpane",
       "label": "openPane()",
       "degree": 10
     },
     {
-      "id": "tsconfig_include",
-      "label": "include",
-      "degree": 9
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 10
     },
     {
       "id": "entrypoints_content_main_announce",
       "label": "announce()",
+      "degree": 9
+    },
+    {
+      "id": "tsconfig_include",
+      "label": "include",
       "degree": 9
     },
     {
@@ -277,13 +277,13 @@
       "degree": 7
     },
     {
-      "id": "entrypoints_content_main_rendersource",
-      "label": "renderSource()",
+      "id": "entrypoints_content_main_cancelselection",
+      "label": "cancelSelection()",
       "degree": 6
     },
     {
-      "id": "entrypoints_content_main_cancelselection",
-      "label": "cancelSelection()",
+      "id": "entrypoints_content_main_rendersource",
+      "label": "renderSource()",
       "degree": 6
     },
     {
@@ -303,17 +303,6 @@
       "confidence": "EXTRACTED",
       "relation": "calls",
       "why": "connects across different repos/directories; peripheral node `updateLicenseStatus()` unexpectedly reaches hub `requestLicenseVerdict()`"
-    },
-    {
-      "source": "selectRegion()",
-      "target": "createStableSelector()",
-      "source_files": [
-        "entrypoints/content.ts",
-        "lib/selector.ts"
-      ],
-      "confidence": "EXTRACTED",
-      "relation": "calls",
-      "why": "connects across different repos/directories; bridges separate communities"
     },
     {
       "source": "describeKeyboardCandidate()",
@@ -343,6 +332,17 @@
       "source_files": [
         "entrypoints/content.ts",
         "lib/sentences.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "selectRegion()",
+      "target": "createStableSelector()",
+      "source_files": [
+        "entrypoints/content.ts",
+        "lib/selector.ts"
       ],
       "confidence": "EXTRACTED",
       "relation": "calls",
