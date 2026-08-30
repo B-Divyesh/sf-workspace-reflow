@@ -62,6 +62,14 @@ It produces:
 To load the extension manually, open `chrome://extensions`, enable Developer
 mode, choose **Load unpacked**, and select `dist/extension`.
 
+The factory deploys `dist/site` as the static-site root. With an existing Static
+Web Apps deployment token, publish the already-built output without changing
+DNS or other infrastructure:
+
+```sh
+swa deploy dist/site --deployment-token "$SWA_DEPLOYMENT_TOKEN" --env production
+```
+
 Original image derivatives can be regenerated with `npm run prepare:assets`.
 The prompt, source image, and model provenance are in `assets/src/` and
 `.factory/design.md`.
