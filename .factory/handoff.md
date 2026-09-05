@@ -156,3 +156,18 @@ billing product is not enabled. No purchase link is exposed, existing license
 restoration remains available, and no reading or accessibility feature is
 gated. No finding from verification 5 remains. The next step is independent
 release verification of the repair commit and this evidence handoff.
+
+## Independent verification 6
+
+**PASS — zero findings and zero untested public claims.**
+
+Independent verification reviewed implementation commit
+`75679a9f74de452ce671084deefe6600d0a1fdeb` and documentation handoff commit
+`2c0eb7d`; clean-checkout wrapper `6b0929d` had no product-code change. A new
+clone completed `npm ci`, `npm test` (33 passed, 5 intended skips), package
+validation, ZIP validation, and every exact current claim command separately
+(23/23; the registry contains 23 entries although the work-order summary said
+21). Fresh desktop and 390 px phone contexts passed the first-screen,
+demo-sandbox, keyboard, privacy, route, and accessibility checks. The live
+deployment matches all 23 deployable candidate files byte-for-byte, and its ZIP
+matches the local SHA-256. See `.factory/verification-6.md` for full evidence.
